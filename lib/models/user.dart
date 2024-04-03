@@ -1,23 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:cv/cv.dart';
+import 'package:dicionario_waiwai/models/base.dart';
 
-@immutable
-class User {
-  static const tableName = 'User';
-  static const idColumn = 'id';
-  static const fullnameColumn = 'full_name';
+String fullnameColumn = 'full_name';
 
-  final int id;
-  final String fullname;
-
-  const User({required this.id, required this.fullname});
+class DbUser extends DbRecord {
+  final fullname = CvField<String>(fullnameColumn);
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is User && other.id == id;
-  }
-
-  @override
-  int get hashCode => id;
+  List<CvField> get fields => [id, fullname];
 }

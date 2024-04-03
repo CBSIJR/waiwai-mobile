@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/components/appBar.dart';
-import 'package:waiwai_dictionary/components/sideBarLogged.dart';
-import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
-import 'package:waiwai_dictionary/components/modal.dart';
-import 'package:waiwai_dictionary/components/word.dart';
-import 'package:waiwai_dictionary/models/wordModels.dart';
+import 'package:dicionario_waiwai/components/appBar.dart';
+import 'package:dicionario_waiwai/components/sideBarLogged.dart';
+import 'package:dicionario_waiwai/components/sidebarNotLogged.dart';
+import 'package:dicionario_waiwai/components/modal.dart';
+import 'package:dicionario_waiwai/components/word.dart';
+import 'package:dicionario_waiwai/models/wordModels.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:waiwai_dictionary/screens/word.dart';
-import 'package:waiwai_dictionary/services/bd.dart';
+import 'package:dicionario_waiwai/screens/word.dart';
+import 'package:dicionario_waiwai/services/bd.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -24,9 +24,9 @@ class _HomePageState extends State<HomePage> {
   bool _isLoggedIn = false;
   late DatabaseHelper _databaseHelper;
   bool _isLoading = false;
-  List<Word> _filteredWords = [];
-  List<Word> _words = [];
-  List<List<Meaning>> _meaningsList = [];
+  // List<Word> _filteredWords = [];
+  // List<Word> _words = [];
+  // List<List<Meaning>> _meaningsList = [];
 
   @override
   void initState() {
@@ -47,58 +47,58 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _clearFilter() {
-    setState(() {
-      _filteredWords.clear();
-    });
-  }
+  // void _clearFilter() {
+  //   setState(() {
+  //     _filteredWords.clear();
+  //   });
+  // }
 
-  void _filterWords(String query) {
-    setState(() {
-      _filteredWords = _words
-          .where(
-              (word) => word.word.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
+  // void _filterWords(String query) {
+  //   setState(() {
+  //     _filteredWords = _words
+  //         .where(
+  //             (word) => word.word.toLowerCase().contains(query.toLowerCase()))
+  //         .toList();
+  //   });
+  // }
 
-  void _loadWords() async {
-    setState(() {
-      _isLoading = true; // Mostrar indicador de progresso
-    });
-    
-    if (_meaningsList.isEmpty) {
-      final meanings = await _databaseHelper.getMeanings();
-      final wordIds =
-          meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
+  // void _loadWords() async {
+  //   setState(() {
+  //     _isLoading = true; // Mostrar indicador de progresso
+  //   });
 
-      _words = await Future.wait(
-          wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
+  //   if (_meaningsList.isEmpty) {
+  //     final meanings = await _databaseHelper.getMeanings();
+  //     final wordIds =
+  //         meanings.map<int>((meaning) => meaning['word_id'] as int).toSet();
 
-      _words
-          .sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
+  //     _words = await Future.wait(
+  //         wordIds.map((wordId) => _databaseHelper.getWordById(wordId)));
 
-      _meaningsList = List.generate(_words.length, (index) {
-        final wordId = _words[index].id;
-        return meanings
-            .where((meaning) => meaning['word_id'] == wordId)
-            .map((meaning) => Meaning.fromJson(meaning))
-            .toList();
-      });
-    }
+  //     _words
+  //         .sort((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase()));
 
-    setState(() {
-      _meaningsList = _meaningsList;
-      _isLoading = false;
-    });
-  }
+  //     _meaningsList = List.generate(_words.length, (index) {
+  //       final wordId = _words[index].id;
+  //       return meanings
+  //           .where((meaning) => meaning['word_id'] == wordId)
+  //           .map((meaning) => Meaning.fromJson(meaning))
+  //           .toList();
+  //     });
+  //   }
 
-  void _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = prefs.getBool('logado') ?? false;
-    });
-  }
+  //   setState(() {
+  //     _meaningsList = _meaningsList;
+  //     _isLoading = false;
+  //   });
+  // }
+
+  // void _checkLoginStatus() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _isLoggedIn = prefs.getBool('logado') ?? false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -203,47 +203,47 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildWordList(List<Word> words) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification is ScrollEndNotification) {
-          if (_scrollController.offset >= 200) {
-            setState(() {
-              _showArrowUpButton = true;
-            });
-          } else {
-            setState(() {
-              _showArrowUpButton = false;
-            });
-          }
-        }
-        return true;
-      },
-      child: ListView.builder(
-        controller: _scrollController,
-        itemCount: words.length,
-        itemBuilder: (context, index) {
-          final word = words[index];
-          final meanings = _meaningsList[index];
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: WordComponent(
-              word: word,
-              meanings: meanings,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return WordPage(meanings: meanings, words: word);
-                    },
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
-    );
-  }
+  // Widget _buildWordList(List<Word> words) {
+  //   return NotificationListener<ScrollNotification>(
+  //     onNotification: (scrollNotification) {
+  //       if (scrollNotification is ScrollEndNotification) {
+  //         if (_scrollController.offset >= 200) {
+  //           setState(() {
+  //             _showArrowUpButton = true;
+  //           });
+  //         } else {
+  //           setState(() {
+  //             _showArrowUpButton = false;
+  //           });
+  //         }
+  //       }
+  //       return true;
+  //     },
+  //     child: ListView.builder(
+  //       controller: _scrollController,
+  //       itemCount: words.length,
+  //       itemBuilder: (context, index) {
+  //         final word = words[index];
+  //         final meanings = _meaningsList[index];
+  //         return Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: WordComponent(
+  //             word: word,
+  //             meanings: meanings,
+  //             onTap: () {
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) {
+  //                     return WordPage(meanings: meanings, words: word);
+  //                   },
+  //                 ),
+  //               );
+  //             },
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 }

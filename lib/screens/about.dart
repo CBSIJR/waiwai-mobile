@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:waiwai_dictionary/components/appBar.dart';
-import 'package:waiwai_dictionary/components/cardMember.dart';
-import 'package:waiwai_dictionary/components/sideBarLogged.dart';
-import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
+import 'package:dicionario_waiwai/components/appBar.dart';
+import 'package:dicionario_waiwai/components/cardMember.dart';
+import 'package:dicionario_waiwai/components/sideBarLogged.dart';
+import 'package:dicionario_waiwai/components/sidebarNotLogged.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});

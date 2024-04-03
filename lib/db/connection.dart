@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:waiwai_dictionary/models/word.dart';
-import 'package:waiwai_dictionary/models/reference.dart';
-import 'package:waiwai_dictionary/models/meaning.dart';
-import 'package:waiwai_dictionary/models/user.dart';
+import 'package:dicionario_waiwai/models/word.dart';
+import 'package:dicionario_waiwai/models/reference.dart';
+import 'package:dicionario_waiwai/models/meaning.dart';
+import 'package:dicionario_waiwai/models/user.dart';
 
 class AppDatabase {
   static final AppDatabase _appDatabase = AppDatabase._internal();

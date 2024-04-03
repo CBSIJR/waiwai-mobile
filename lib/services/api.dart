@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:waiwai_dictionary/models/wordModels.dart';
-import 'package:waiwai_dictionary/services/bd.dart';
+import 'package:dicionario_waiwai/models/wordModels.dart';
+import 'package:dicionario_waiwai/services/bd.dart';
 
 String urlBase = 'https://waiwaiapi-mock.vercel.app/api';
 

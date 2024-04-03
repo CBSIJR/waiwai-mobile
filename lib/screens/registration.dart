@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/screens/home.dart';
+import 'package:dicionario_waiwai/screens/home.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({
@@ -13,7 +13,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  
   final _formkey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();

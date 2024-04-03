@@ -1,43 +1,43 @@
-import 'package:flutter/material.dart';
+import 'package:cv/cv.dart';
+import 'package:dicionario_waiwai/models/base.dart';
 
-@immutable
-class Meaning {
-  static const tableName = 'Meaning';
-  static const idColumn = 'id';
-  static const meaningColumn = 'meaning';
-  static const commentColumn = 'comment';
-  static const chapterIdColumn = 'chapter_id';
-  static const entryIdColumn = 'entry_id';
-  static const wordIdColumn = 'word_id';
-  static const referenceIdColumn = 'reference_id';
-  static const userIdColumn = 'user_id';
+// String tableName = 'meaningTable';
+// String meaningColumn = 'meaning';
+// String commentColumn = 'comment';
+// String chapterIdColumn = 'chapter_id';
+// String entryIdColumn = 'entry_id';
+// String wordIdColumn = 'word_id';
+// String referenceIdColumn = 'reference_id';
+// String userIdColumn = 'user_id';
 
-  final int id;
-  final String meaning;
-  final String comment;
-  final int chapterId;
-  final int entryId;
-  final int wordId;
-  final int referenceId;
-  final int userId;
+// String schemaMeaning = '''
+// CREATE TABLE $tableName ("
+//           "$idColumn INTEGER PRIMARY KEY,"
+//           "$meaningColumn TEXT,"
+//           "$commentColumn TEXT,"
+//           "$chapterIdColumn INTEGER,"
+//           "$entryIdColumn INTEGER,"
+//           "$wordIdColumn INTEGER,"
+//           "$referenceIdColumn INTEGER,"
+//           "$userIdColumn INTEGER,"
+//           "FOREIGN KEY($referenceIdColumn) REFERENCES ${Reference.tableName}(${Reference.idColumn}) ON DELETE CASCADE,"
+//           "FOREIGN KEY($userIdColumn) REFERENCES ${User.tableName}(${User.idColumn}) ON DELETE CASCADE);
+// '''
 
-  const Meaning(
-      {required this.id,
-      required this.meaning,
-      required this.comment,
-      required this.chapterId,
-      required this.entryId,
-      required this.wordId,
-      required this.referenceId,
-      required this.userId});
+class DbMeaning extends DbRecord {
+  String tableName = 'meaningTable';
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Meaning && other.id == id;
-  }
+  final meaning = CvField<String>('meaning');
+  final comment = CvField<String>('comment');
+  final chapterId = CvField<int>('chapter_id');
+  final entryId = CvField<int>('entry_id');
+  final wordId = CvField<int>('word_id');
+  final referenceId = CvField<int>('reference_id');
+  final userId = CvField<int>('user_id');
 
   @override
-  int get hashCode => id;
+  List<CvField> get fields =>
+      [id, meaning, comment, chapterId, entryId, wordId, referenceId, userId];
+
+  String get schema => '${meaning.key} ${referenceId.key}';
 }

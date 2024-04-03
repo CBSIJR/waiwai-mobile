@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:waiwai_dictionary/models/wordModels.dart';
+import 'package:dicionario_waiwai/models/wordModels.dart';
 
 class DatabaseHelper {
   Database? _database;

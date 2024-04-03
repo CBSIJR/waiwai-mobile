@@ -1,26 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:cv/cv.dart';
+import 'package:dicionario_waiwai/models/base.dart';
 
-@immutable
-class Reference {
-  static const tableName = 'Reference';
-  static const idColumn = 'id';
-  static const referenceColumn = 'reference';
-  static const urlColumn = 'url';
+String referenceColumn = 'reference';
+String urlColumn = 'url';
 
-  final int id;
-  final String reference;
-  final String url;
-
-  const Reference({required this.id, required this.reference, String? url})
-      : url = url ?? '';
+class DbReference extends DbRecord {
+  final reference = CvField<String>(referenceColumn);
+  final url = CvField<String>(urlColumn);
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Reference && other.id == id;
-  }
-
-  @override
-  int get hashCode => id;
+  List<CvField> get fields => [id, reference, url];
 }

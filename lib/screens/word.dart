@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:waiwai_dictionary/components/appBar.dart';
-import 'package:waiwai_dictionary/components/myExpansionTile.dart';
-import 'package:waiwai_dictionary/components/sideBarLogged.dart';
-import 'package:waiwai_dictionary/components/sidebarNotLogged.dart';
-import 'package:waiwai_dictionary/models/wordModels.dart';
+import 'package:dicionario_waiwai/components/appBar.dart';
+import 'package:dicionario_waiwai/components/myExpansionTile.dart';
+import 'package:dicionario_waiwai/components/sideBarLogged.dart';
+import 'package:dicionario_waiwai/components/sidebarNotLogged.dart';
+import 'package:dicionario_waiwai/models/wordModels.dart';
 
 class WordPage extends StatefulWidget {
   final List<Meaning> meanings;

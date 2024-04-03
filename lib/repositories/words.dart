@@ -1,8 +1,8 @@
-import 'package:waiwai_dictionary/db/connection.dart';
-import 'package:waiwai_dictionary/models/word.dart';
-import 'package:waiwai_dictionary/models/reference.dart';
-import 'package:waiwai_dictionary/models/meaning.dart';
-import 'package:waiwai_dictionary/models/user.dart';
+import 'package:dicionario_waiwai/db/connection.dart';
+import 'package:dicionario_waiwai/models/word.dart';
+import 'package:dicionario_waiwai/models/reference.dart';
+import 'package:dicionario_waiwai/models/meaning.dart';
+import 'package:dicionario_waiwai/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Words {

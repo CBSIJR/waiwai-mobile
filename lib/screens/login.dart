@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/screens/home.dart';
-import 'package:waiwai_dictionary/screens/registration.dart';
+import 'package:dicionario_waiwai/screens/home.dart';
+import 'package:dicionario_waiwai/screens/registration.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -148,7 +148,8 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (_formkey.currentState!.validate()) {
                           // Salvar o status de login como verdadeiro
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                           await prefs.setBool('logado', true);
 
                           // Navegar para a próxima tela (HomePage)
