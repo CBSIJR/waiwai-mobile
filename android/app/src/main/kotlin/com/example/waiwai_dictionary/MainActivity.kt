@@ -1,4 +1,4 @@
-package com.example.waiwai_dictionary
+package com.ufopa.dicionario.waiwai
 
 import io.flutter.embedding.android.FlutterActivity
 

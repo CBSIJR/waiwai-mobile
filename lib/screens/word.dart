@@ -1,41 +1,35 @@
+import 'package:dicionario_waiwai/components/layouts.dart';
+import 'package:dicionario_waiwai/models/legacy/word.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dicionario_waiwai/components/appBar.dart';
 import 'package:dicionario_waiwai/components/myExpansionTile.dart';
-import 'package:dicionario_waiwai/components/sideBarLogged.dart';
-import 'package:dicionario_waiwai/components/sidebarNotLogged.dart';
-import 'package:dicionario_waiwai/models/wordModels.dart';
 
-class WordPage extends StatefulWidget {
-  final List<Meaning> meanings;
-  final Word words;
+class WordScreen extends StatefulWidget {
+//   final List<Meaning> meanings;
+  final DbWord word;
 
-  const WordPage({
-    Key? key,
-    required this.meanings,
-    required this.words,
-  }) : super(key: key);
+  const WordScreen({
+    super.key,
+    // required this.meanings,
+    required this.word,
+  });
 
   @override
-  State<WordPage> createState() => _WordPageState();
+  State<WordScreen> createState() => _WordScreenState();
 }
 
-class _WordPageState extends State<WordPage> {
-  bool _isLoggedIn = false;
+class _WordScreenState extends State<WordScreen> {
+//   bool _isLoggedIn = false;
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     // TODO: implement dispose
+//     super.dispose();
+//   }
 
   @override
   Widget build(BuildContext context) {
-    _checkLoginStatus();
-    return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F2),
-      appBar: MyAppBar(),
-      drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
+    // _checkLoginStatus();
+    return MainScreenLayout(
       body: ListView(
         children: [
           Container(
@@ -55,7 +49,7 @@ class _WordPageState extends State<WordPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          widget.words.word,
+                          widget.word.word.valueOrThrow,
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontSize: 24,
@@ -84,31 +78,32 @@ class _WordPageState extends State<WordPage> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: widget.meanings.length,
+                              itemCount:
+                                  100, // widget.total_words, #TODO: Implementar total_words via provider
                               itemBuilder: (context, index) {
-                                final meaning = widget.meanings[index];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 3,
-                                          blurRadius: 7,
-                                          offset: const Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: MyExpantionTile(
-                                      significado: meaning.meaning,
-                                      fonema: '${widget.words.phonemic}',
-                                      meaning: meaning,
-                                    ),
-                                  ),
-                                );
+                                //final meaning = widget.word.meanings[index];
+                                print(widget.word);
+                                return Text("olaaa");
+                                // return Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: Container(
+                                //     decoration: BoxDecoration(
+                                //       color: Colors.white,
+                                //       borderRadius: BorderRadius.circular(20),
+                                //       boxShadow: [
+                                //         BoxShadow(
+                                //           color: Colors.grey.withOpacity(0.5),
+                                //           spreadRadius: 3,
+                                //           blurRadius: 7,
+                                //           offset: const Offset(0, 3),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     child: MyExpantionTile(
+                                //       meaning: meaning.,
+                                //     ),
+                                //   ),
+                                // );
                               },
                             ),
                           ],
@@ -173,14 +168,21 @@ class _WordPageState extends State<WordPage> {
         ],
       ),
     );
+
+    // Scaffold(
+    //   backgroundColor: const Color(0xFFF2F2F2),
+    //   appBar: MyAppBar(),
+    //   drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
+    //   body:
+    // );
   }
 
   // Método para verificar o status de login
-  void _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = prefs.getBool('logado') ??
-          false; // Se não existir o status de login, assume como falso
-    });
-  }
+//   void _checkLoginStatus() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     setState(() {
+//       _isLoggedIn = prefs.getBool('logado') ??
+//           false; // Se não existir o status de login, assume como falso
+//     });
+//   }
 }

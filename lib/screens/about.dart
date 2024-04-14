@@ -1,30 +1,26 @@
-// ignore_for_file: unnecessary_null_comparison
-
+import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dicionario_waiwai/components/appBar.dart';
-import 'package:dicionario_waiwai/components/cardMember.dart';
-import 'package:dicionario_waiwai/components/sideBarLogged.dart';
-import 'package:dicionario_waiwai/components/sidebarNotLogged.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dicionario_waiwai/components/layouts/appbar.dart';
+import 'package:dicionario_waiwai/components/aboutcard.dart';
 
-class Sobre extends StatefulWidget {
-  const Sobre({super.key});
+import '../components/layouts/sidebar.dart';
+
+class AboutScreen extends StatefulWidget {
+  const AboutScreen({super.key});
 
   @override
-  State<Sobre> createState() => _SobreState();
+  State<AboutScreen> createState() => _AboutScreenState();
 }
 
-class _SobreState extends State<Sobre> {
-  bool _isLoggedIn = false;
+class _AboutScreenState extends State<AboutScreen> {
+//   bool _isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
-    _checkLoginStatus(); // Verificar o status de login ao construir a página
+    // _checkLoginStatus(); // Verificar o status de login ao construir a página
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F2),
-      appBar: MyAppBar(),
-      drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
+    return MainScreenLayout(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(28),
@@ -37,19 +33,18 @@ class _SobreState extends State<Sobre> {
               child: Column(
                 children: [
                   const Image(
-                    image: AssetImage("assets/tapotaLogo.png"),
+                    image: AssetImage("assets/app-logo.png"),
                     height: 150,
                     width: 150,
                   ),
-                  const Text(
-                    "“Traduza e se comunique com praticidade!”",
-                    textAlign: TextAlign.center,
-                  ),
+                  const Text("“Traduza e se comunique com praticidade!”",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontStyle: FontStyle.italic)),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      """Economize tempo com as suas traduções e concentre-se nas tarefas que realmente importam. Com o WaiwaiTapota, você tem um repertório de palavras da língua indígena WaiWai para o português!""",
-                      textAlign: TextAlign.center,
+                      "Economize tempo com as suas traduções e concentre-se nas tarefas que realmente importam. Com o Dicionário Waiwai, você tem um repertório de palavras da língua indígena waiwai para o português!",
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                   const Padding(
@@ -74,11 +69,11 @@ class _SobreState extends State<Sobre> {
   }
 
   // Método para verificar o status de login
-  void _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = prefs.getBool('logado') ??
-          false; // Se não existir o status de login, assume como falso
-    });
-  }
+//   void _checkLoginStatus() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     setState(() {
+//       _isLoggedIn = prefs.getBool('logado') ??
+//           false; // Se não existir o status de login, assume como falso
+//     });
+//   }
 }

@@ -102,53 +102,10 @@ class _SideBarLoggedState extends State<SideBarLogged> {
           if (progress == 1.0) {
             // Quando o download for concluído, exibe um novo diálogo informando que os dados foram baixados com sucesso
             Navigator.of(context).pop();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Download Concluído'),
-                  content: const Text('Os dados foram baixados com sucesso!'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                          (route) => false,
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
           }
         });
       } catch (e) {
         Navigator.of(context).pop();
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Erro'),
-              content: SingleChildScrollView(
-                  child:
-                      Text('Ocorreu um erro durante o download dos dados: $e')),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Fecha o diálogo
-                  },
-                ),
-              ],
-            );
-          },
-        );
       }
     }
 

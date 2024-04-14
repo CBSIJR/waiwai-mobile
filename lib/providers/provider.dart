@@ -1,11 +1,15 @@
+import 'package:dicionario_waiwai/repositories/meanings.dart';
+import 'package:dicionario_waiwai/repositories/references.dart';
+import 'package:dicionario_waiwai/repositories/words.dart';
+import 'package:dicionario_waiwai/repositories/users.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:synchronized/synchronized.dart';
 import 'dart:async';
-import 'package:dicionario_waiwai/models/base.dart';
-import 'package:dicionario_waiwai/models/user.dart';
-import 'package:dicionario_waiwai/models/reference.dart';
-import 'package:dicionario_waiwai/models/word.dart';
-import 'package:dicionario_waiwai/models/meaning.dart';
+import 'package:dicionario_waiwai/models/legacy/base.dart';
+import 'package:dicionario_waiwai/models/legacy/user.dart';
+import 'package:dicionario_waiwai/models/legacy/reference.dart';
+import 'package:dicionario_waiwai/models/legacy/word.dart';
+import 'package:dicionario_waiwai/models/legacy/meaning.dart';
 
 class DbProvider {
   final lock = Lock(reentrant: true);
@@ -13,7 +17,18 @@ class DbProvider {
   final _updateTriggerController = StreamController<bool>.broadcast();
   Database? db;
 
-  DbProvider(this.dbFactory);
+  // Repositories
+  late Users users;
+  late References references;
+  late Words words;
+  late Meanings meanings;
+
+  DbProvider(this.dbFactory) {
+    users = Users(this);
+    references = References(this);
+    words = Words(this);
+    meanings = Meanings(this);
+  }
 
   Future openPath(String path) async {
     db = await dbFactory.openDatabase(path,

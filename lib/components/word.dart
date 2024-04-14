@@ -1,36 +1,35 @@
+import 'package:dicionario_waiwai/models/legacy/word.dart';
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/models/wordModels.dart';
 
 class WordComponent extends StatefulWidget {
   final VoidCallback onTap;
-  final Word word;
-  final List<Meaning> meanings;
+  final DbWord word;
+  // final List<Meaning> meanings;
 
   const WordComponent({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.word,
-    required this.meanings,
-  }) : super(key: key);
+    // required this.meanings,
+  });
 
   @override
   State<WordComponent> createState() => _WordComponentState();
 }
 
 class _WordComponentState extends State<WordComponent> {
-
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    String firstMeaning = widget.meanings.isNotEmpty ? widget.meanings.first.meaning : "";
-
-    // Limitar o primeiro significado a 30 caracteres
-    if (firstMeaning.length > 30) {
-      firstMeaning = "${firstMeaning.substring(0, 30)}...";
+    String meaningText = '';
+    for (var i = 0; i < widget.word.meanings.length; i++) {
+      // append
+      meaningText += widget.word.meanings[i].meaning.valueOrThrow;
     }
 
     return GestureDetector(
@@ -46,7 +45,7 @@ class _WordComponentState extends State<WordComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.word.word,
+              widget.word.word.valueOrThrow,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
@@ -54,7 +53,7 @@ class _WordComponentState extends State<WordComponent> {
             ),
             const SizedBox(height: 10),
             Text(
-              firstMeaning,
+              meaningText,
               style: const TextStyle(
                 fontSize: 16.0,
               ),

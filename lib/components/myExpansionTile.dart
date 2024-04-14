@@ -1,56 +1,33 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'package:dicionario_waiwai/models/legacy/meaning.dart';
 import 'package:flutter/material.dart';
-import 'package:waiwai_dictionary/models/wordModels.dart';
-import 'package:waiwai_dictionary/services/bd.dart';
 
 class MyExpantionTile extends StatefulWidget {
-  final String significado;
-  final String fonema;
-  final Meaning meaning;
+  final DbMeaning meaning;
 
   const MyExpantionTile({
-    Key? key,
-    required this.significado,
-    required this.fonema,
+    super.key,
     required this.meaning,
-  }) : super(key: key);
+  });
 
   @override
   State<MyExpantionTile> createState() => _MyExpantionTileState();
 }
 
 class _MyExpantionTileState extends State<MyExpantionTile> {
-  String referenceName = '';
-
-  @override
-  void initState() {
-    super.initState();
-    // Chama a função para obter o nome da referência
-    getReferenceName();
-  }
-
-  void getReferenceName() async {
-    try {
-      String name = await DatabaseHelper()
-          .getReferenceNameById(widget.meaning.referenceId);
-      setState(() {
-        referenceName = name;
-      });
-    } catch (e) {
-      setState(() {
-        referenceName = 'Erro: $e';
-      });
-    }
-  }
+//   @override
+//   void initState() {
+//     // super.initState();
+//     // Chama a função para obter o nome da referência
+//   }
 
   @override
   Widget build(BuildContext context) {
-    String displayedName =
-        referenceName.isNotEmpty ? referenceName : 'Carregando...';
-    displayedName = displayedName.length > 30
-        ? '${displayedName.substring(0, 30)}...'
-        : displayedName;
+    String referenceName = widget.meaning.reference!.reference.valueOrThrow;
+    String referencedisplayedName = referenceName.length > 30
+        ? '${referenceName.substring(0, 15)}...'
+        : referenceName;
 
     return Container(
       decoration: BoxDecoration(
@@ -71,7 +48,7 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
         ),
         child: ExpansionTile(
           title: Text(
-            displayedName,
+            referencedisplayedName,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -102,43 +79,39 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                                 ),
                               ),
                               TextSpan(
-                                text: widget.meaning.meaning == 'null' ||
-                                        widget.meaning.meaning.isEmpty
-                                    ? 'Indisponível'
-                                    : widget.meaning.meaning,
-                              ),
+                                  text: widget.meaning.meaning.valueOrThrow),
                             ],
                           ),
                         ),
                         const SizedBox(height: 5),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 0), // Ajuste aqui
-                          child: RichText(
-                            textAlign: TextAlign.left,
-                            text: TextSpan(
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                              ),
-                              children: [
-                                const TextSpan(
-                                  text: 'Fonema: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: widget.fonema == 'null' ||
-                                          widget.fonema.isEmpty
-                                      ? 'Indisponível'
-                                      : widget.fonema,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsets.only(left: 0), // Ajuste aqui
+                        //   child: RichText(
+                        //     textAlign: TextAlign.left,
+                        //     text: const TextSpan(
+                        //       style: TextStyle(
+                        //         color: Colors.black,
+                        //         fontSize: 18,
+                        //       ),
+                        //       //   children: [// TODO: colocar para a palavra, não para significado
+                        //       //     const TextSpan(
+                        //       //       text: 'Fonema: ',
+                        //       //       style: TextStyle(
+                        //       //         fontWeight: FontWeight.bold,
+                        //       //       ),
+                        //       //     ),
+                        //       //     TextSpan(
+                        //       //       text: widget.meaning.word.phonemic == 'null' ||
+                        //       //               widget.fonema.isEmpty
+                        //       //           ? 'Indisponível'
+                        //       //           : widget.fonema,
+                        //       //     ),
+                        //       //   ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 5),
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 0), // Ajuste aqui
@@ -157,10 +130,8 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: widget.meaning.comment.isEmpty ||
-                                          widget.meaning.comment == 'null'
-                                      ? 'Indisponível'
-                                      : widget.meaning.comment,
+                                  text: widget.meaning.comment.valueOrNull ??
+                                      'Indisponível',
                                 ),
                               ],
                             ),

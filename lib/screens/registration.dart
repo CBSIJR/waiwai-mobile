@@ -1,12 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:dicionario_waiwai/screens/home.dart';
+import 'package:dicionario_waiwai/screens/home/home.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();

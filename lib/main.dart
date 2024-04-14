@@ -1,27 +1,31 @@
+import 'package:dicionario_waiwai/database/database.dart';
+import 'package:dicionario_waiwai/screens/home/home.dart';
+import 'package:dicionario_waiwai/screens/home/state.dart';
 import 'package:flutter/material.dart';
-import 'package:dicionario_waiwai/screens/homepage.dart';
 import 'package:provider/provider.dart';
-import 'package:dicionario_waiwai/states/notifier.dart';
 
-void main() {
+late AppDatabase databaseProvider;
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  databaseProvider = AppDatabase();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        ),
-        home: const MyHomePage(),
-      ),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+              create: (context) => WordState(databaseProvider)),
+        ],
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomeScreen(),
+        ));
   }
 }

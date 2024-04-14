@@ -1,14 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:dicionario_waiwai/screens/home.dart';
+import 'package:dicionario_waiwai/screens/home/home.dart';
 import 'package:dicionario_waiwai/screens/registration.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Tela de login de usuário
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();

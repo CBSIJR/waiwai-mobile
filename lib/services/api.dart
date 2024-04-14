@@ -1,72 +1,166 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:dicionario_waiwai/models/wordModels.dart';
-import 'package:dicionario_waiwai/services/bd.dart';
+import 'package:dicionario_waiwai/database/database.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:dicionario_waiwai/util/app_url.dart';
+import 'package:drift/drift.dart';
 
-String urlBase = 'https://waiwaiapi-mock.vercel.app/api';
+abstract class Message {
+  String get detail;
+  bool get status;
+}
 
-// Definindo um tipo de função de retorno de chamada para atualização de progresso
-typedef ProgressCallback = void Function(double);
+class MessageApi<T> implements Message {
+  @override
+  final String detail;
+  @override
+  final bool status;
+  final T data;
 
-Future<void> fetchDataAndInsertIntoDatabase(
-    {required ProgressCallback onProgress}) async {
-  try {
-    // Realiza a solicitação para a rota de palavras
-    var wordsResponse = await http.get(Uri.parse('$urlBase/words/export/all'));
-    var referencesResponse =
-        await http.get(Uri.parse('$urlBase/references/export/all'));
-    var meaningsResponse =
-        await http.get(Uri.parse('$urlBase/meanings/export/all'));
+  MessageApi({required this.detail, required this.status, required this.data});
+}
 
-    if (wordsResponse.statusCode == 200 &&
-        referencesResponse.statusCode == 200 &&
-        meaningsResponse.statusCode == 200) {
-      // Converta os dados em listas de objetos
-      List<dynamic> wordsData = jsonDecode(wordsResponse.body);
-      List<dynamic> referencesData = jsonDecode(referencesResponse.body);
-      List<dynamic> meaningsData = jsonDecode(meaningsResponse.body);
+class MessageApiException implements Exception, Message {
+  @override
+  final String detail;
+  @override
+  final bool status = false;
 
-      // Calcula o total de operações necessárias para estimar o progresso
-      int totalOperations =
-          wordsData.length + referencesData.length + meaningsData.length;
-      int completedOperations = 0;
+  MessageApiException({required this.detail});
+}
 
-      // Insira os dados nas tabelas correspondentes do banco de dados
-      for (var data in wordsData) {
-        if (data.containsKey('word')) {
-          Word word = Word.fromJson(data);
-          await DatabaseHelper().insertWord(word);
-          completedOperations++;
-          onProgress(completedOperations /
-              totalOperations); // Chama a função de retorno de chamada com o progresso atual
-        }
-      }
+class WaiWaiApiProvider with ChangeNotifier {
+  Future<MessageApi> getExportUsers() async {
+    late MessageApi result;
 
-      for (var data in referencesData) {
-        if (data.containsKey('reference')) {
-          Reference reference = Reference.fromJson(data);
-          await DatabaseHelper().insertReference(reference);
-          completedOperations++;
-          onProgress(completedOperations /
-              totalOperations); // Chama a função de retorno de chamada com o progresso atual
-        }
-      }
+    Response response = await get(
+      Uri.parse(AppUrl.usuariosExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
 
-      for (var data in meaningsData) {
-        if (data.containsKey('meaning')) {
-          Meaning meaning = Meaning.fromJson(data);
-          await DatabaseHelper().insertMeaning(meaning);
-          completedOperations++;
-          onProgress(completedOperations /
-              totalOperations); // Chama a função de retorno de chamada com o progresso atual
-        }
-      }
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
 
-      print('Dados inseridos no banco de dados com sucesso.');
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<UserCompanion> users =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final id = item['id'] as int;
+        final fullName = item['full_name'] as String;
+
+        return UserCompanion.insert(id: Value(id), fullName: fullName);
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: users);
     } else {
-      print('Erro ao buscar dados da API.');
+      throw MessageApiException(detail: 'Usuários');
     }
-  } catch (e) {
-    print('Erro durante a solicitação e inserção de dados: $e');
+    return result;
+  }
+
+  Future<MessageApi> getExportReferences() async {
+    late MessageApi result;
+
+    Response response = await get(
+      Uri.parse(AppUrl.referenciasExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<ReferenceCompanion> references =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final id = item['id'] as int;
+        final reference = item['reference'] as String;
+        final url = item['url'] as String?;
+        return ReferenceCompanion.insert(
+            id: Value(id), reference: reference, url: Value(url));
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: references);
+    } else {
+      throw MessageApiException(detail: 'Referências');
+    }
+    return result;
+  }
+
+  Future<MessageApi> getExportWords() async {
+    late MessageApi result;
+
+    Response response = await get(
+      Uri.parse(AppUrl.palavrasExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<WordCompanion> words =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final id = item['id'] as int;
+        final word = item['word'] as String;
+        final phonemic = item['phonemic'] as String?;
+        final createdAt = DateTime.parse(item['created_at'] as String);
+        final updateAt = DateTime.parse(item['update_at'] as String);
+        final userId = item['user_id'] as int;
+
+        return WordCompanion.insert(
+            id: Value(id),
+            word: word,
+            phonemic: Value(phonemic),
+            createdAt: createdAt,
+            updateAt: updateAt,
+            userId: userId);
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: words);
+    } else {
+      throw MessageApiException(detail: 'Palavras');
+    }
+    return result;
+  }
+
+  Future<MessageApi> getExportMeanings() async {
+    late MessageApi result;
+
+    Response response = await get(
+      Uri.parse(AppUrl.significadosExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<MeaningCompanion> words =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final id = item['id'] as int;
+        final meaning = item['meaning'] as String;
+        final comment = item['comment'] as String?;
+        final chapterId = item['chapter_id'] as int?;
+        final entryId = item['entry_id'] as int?;
+        final wordId = item['word_id'] as int;
+        final referenceId = item['reference_id'] as int;
+        final userId = item['user_id'] as int;
+
+        return MeaningCompanion.insert(
+            id: Value(id),
+            meaning: meaning,
+            comment: Value(comment),
+            chapterId: Value(chapterId),
+            entryId: Value(entryId),
+            wordId: wordId,
+            referenceId: referenceId,
+            userId: userId);
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: words);
+    } else {
+      throw MessageApiException(detail: 'Significados');
+    }
+    return result;
   }
 }
