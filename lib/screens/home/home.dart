@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: CircularProgressIndicator(),
         );
       }
-      print(value.words.length);
       return _buildWordList(value);
     }));
   }
@@ -70,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
             child: WordComponent(
               word: word,
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) {
-                //       return WordScreen(word: word);
-                //     },
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return WordScreen(word: word);
+                    },
+                  ),
+                );
               },
             ),
           );

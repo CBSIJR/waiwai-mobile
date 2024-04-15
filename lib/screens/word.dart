@@ -1,11 +1,14 @@
+import 'package:dicionario_waiwai/components/icons.dart';
 import 'package:dicionario_waiwai/components/layouts.dart';
+import 'package:dicionario_waiwai/components/myExpansionTile.dart';
+import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
 // import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 
 class WordScreen extends StatefulWidget {
 //   final List<Meaning> meanings;
-  final word;
-  const WordScreen({super.key, required this.word
+  WordWithMeaning word;
+  WordScreen({super.key, required this.word
       // required this.meanings,
       });
 
@@ -16,11 +19,10 @@ class WordScreen extends StatefulWidget {
 class _WordScreenState extends State<WordScreen> {
 //   bool _isLoggedIn = false;
 
-//   @override
-//   void dispose() {
-//     // TODO: implement dispose
-//     super.dispose();
-//   }
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,31 +76,31 @@ class _WordScreenState extends State<WordScreen> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount:
-                                  100, // widget.total_words, #TODO: Implementar total_words via provider
+                              itemCount: widget.word.$2
+                                  .length, // widget.total_words, #TODO: Implementar total_words via provider
                               itemBuilder: (context, index) {
-                                //final meaning = widget.word.meanings[index];
-                                return Text("olaaa");
-                                // return Padding(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   child: Container(
-                                //     decoration: BoxDecoration(
-                                //       color: Colors.white,
-                                //       borderRadius: BorderRadius.circular(20),
-                                //       boxShadow: [
-                                //         BoxShadow(
-                                //           color: Colors.grey.withOpacity(0.5),
-                                //           spreadRadius: 3,
-                                //           blurRadius: 7,
-                                //           offset: const Offset(0, 3),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //     child: MyExpantionTile(
-                                //       meaning: meaning.,
-                                //     ),
-                                //   ),
-                                // );
+                                final meaning = widget.word.$2[index];
+                                // return Text("olaaa");
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 3,
+                                          blurRadius: 7,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: MyExpantionTile(
+                                      meaning: meaning,
+                                    ),
+                                  ),
+                                );
                               },
                             ),
                           ],
@@ -144,19 +146,16 @@ class _WordScreenState extends State<WordScreen> {
             child: Container(
               height: 200,
               margin: const EdgeInsets.symmetric(horizontal: 23),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.black,
-                ),
-              ),
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(20),
+              //     border: Border.all(
+              //       color: Colors.black,
+              //     ),
+              //   ),
               alignment: Alignment.center,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.asset(
-                  'assets/nothumb.png',
-                  fit: BoxFit.cover,
-                ),
+                child: svgAssetNoThumb,
               ),
             ),
           ),

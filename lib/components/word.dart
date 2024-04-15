@@ -18,13 +18,9 @@ class WordComponent extends StatefulWidget {
 class _WordComponentState extends State<WordComponent> {
   @override
   Widget build(BuildContext context) {
-    String wordText =
-        widget.word.$1.word; // TODO: Implementar palavra via provider
-    String meaningText = ''; // TODO: Implementar significado via provider
-    for (var i = 0; i < widget.word.$2.length; i++) {
-      meaningText += widget.word.$2[i].$1.meaning;
-    }
-
+    String wordText = widget.word.$1.word;
+    final meaningList = widget.word.$2.map((e) => e.$1.meaning).toList();
+    String meaningText = meaningList.join(', ');
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(

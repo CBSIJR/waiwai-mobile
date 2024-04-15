@@ -1,10 +1,14 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
 
 class MyExpantionTile extends StatefulWidget {
-  const MyExpantionTile({
+  MeaningWithReference meaning;
+
+  MyExpantionTile({
     super.key,
+    required this.meaning,
   });
 
   @override
@@ -21,9 +25,9 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
   @override
   Widget build(BuildContext context) {
     String referenceName =
-        'Referência de teste'; // TODO: obter o nome da referência
-    String referencedisplayedName = referenceName.length > 30
-        ? '${referenceName.substring(0, 15)}...'
+        widget.meaning.$2.reference; // TODO: obter o nome da referência
+    String referencedisplayedName = referenceName.length > 25
+        ? '${referenceName.substring(0, 25)}...'
         : referenceName;
 
     return Container(
@@ -33,7 +37,7 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
         boxShadow: const [
           BoxShadow(
             color: Colors.grey,
-            spreadRadius: 2,
+            spreadRadius: 3,
             blurRadius: 5,
             offset: Offset(0, 3),
           ),
@@ -63,21 +67,21 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                       children: [
                         RichText(
                           textAlign: TextAlign.left,
-                          text: const TextSpan(
-                            style: TextStyle(
+                          text: TextSpan(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 18,
                             ),
                             children: [
-                              TextSpan(
+                              const TextSpan(
                                 text: 'Significado: ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextSpan(
-                                  text:
-                                      'Significado'), // TODO: colocar para a palavra, não para significado
+                                  text: widget.meaning.$1
+                                      .meaning), // TODO: colocar para a palavra, não para significado
                             ],
                           ),
                         ),

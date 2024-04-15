@@ -11,3 +11,9 @@ Widget pngAssetAppLogo = const Image(
   width: 230,
   image: AssetImage("assets/app-logo.png"),
 );
+
+Widget svgAssetNotFound = SvgPicture.asset('assets/not-found.svg',
+    semanticsLabel: 'Sem itens para exibir');
+
+Widget svgAssetNoThumb = SvgPicture.asset('assets/no-thumbnail.svg',
+    semanticsLabel: 'Sem imagem para exibir');
