@@ -10,28 +10,21 @@ class WordState extends ChangeNotifier {
   int _page = 1;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  late int _total = 0;
+
+  int get total => _total;
 
   int get page => _page;
+  List get words => _list;
   WordState(this.providerDb) {
     _repository = WordRepository(providerDb);
   }
 
-//   List<DbWord> get words => _list;
-//   void addWord(DbWord word) {
-//     _list.add(word);
-//     notifyListeners();
-//   }
-
-//   void addWords(DbWords words) {
-//     _list.addAll(words.toList());
-//     notifyListeners();
-//   }
-
-  Future<void> loadList() async {
-    _repository.listByPage(page: _page).listen((e) => print(e));
+  Future<void> fetchWords() async {
     if (_page > 1) return;
     _isLoading = true;
-    await Future.delayed(const Duration(seconds: 2));
+    _total = await _repository.count();
+    _list.addAll(await _repository.getByPage(page: _page));
     _page++;
     _isLoading = false;
     notifyListeners();

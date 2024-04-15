@@ -1,16 +1,14 @@
-import 'package:dicionario_waiwai/models/legacy/word.dart';
+import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
 
 class WordComponent extends StatefulWidget {
   final VoidCallback onTap;
-  final DbWord word;
-  // final List<Meaning> meanings;
+  final WordWithMeaning word;
 
   const WordComponent({
     super.key,
     required this.onTap,
     required this.word,
-    // required this.meanings,
   });
 
   @override
@@ -19,17 +17,12 @@ class WordComponent extends StatefulWidget {
 
 class _WordComponentState extends State<WordComponent> {
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    String meaningText = '';
-    for (var i = 0; i < widget.word.meanings.length; i++) {
-      // append
-      meaningText += widget.word.meanings[i].meaning.valueOrThrow;
+    String wordText =
+        widget.word.$1.word; // TODO: Implementar palavra via provider
+    String meaningText = ''; // TODO: Implementar significado via provider
+    for (var i = 0; i < widget.word.$2.length; i++) {
+      meaningText += widget.word.$2[i].$1.meaning;
     }
 
     return GestureDetector(
@@ -45,7 +38,7 @@ class _WordComponentState extends State<WordComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.word.word.valueOrThrow,
+              wordText,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
@@ -53,7 +46,7 @@ class _WordComponentState extends State<WordComponent> {
             ),
             const SizedBox(height: 10),
             Text(
-              meaningText,
+              meaningText, // TODO: Implementar significado via provider
               style: const TextStyle(
                 fontSize: 16.0,
               ),

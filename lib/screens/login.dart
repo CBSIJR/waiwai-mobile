@@ -65,8 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         prefixIcon: const Icon(
-                          FontAwesomeIcons
-                              .envelope, // Ícone de carta para e-mail
+                          Icons.mail,
                           color: Colors.grey,
                         ),
                       ),
@@ -112,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         prefixIcon: const Icon(
-                          FontAwesomeIcons.lock, // Ícone de cadeado para senha
+                          Icons.lock_outline, // Ícone de cadeado para senha
                           color: Colors.grey,
                         ),
                       ),
@@ -155,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HomePage(),
+                              builder: (context) => const HomeScreen(),
                             ),
                             (route) => false,
                           );

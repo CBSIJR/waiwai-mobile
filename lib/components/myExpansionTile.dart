@@ -1,14 +1,10 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
-import 'package:dicionario_waiwai/models/legacy/meaning.dart';
 import 'package:flutter/material.dart';
 
 class MyExpantionTile extends StatefulWidget {
-  final DbMeaning meaning;
-
   const MyExpantionTile({
     super.key,
-    required this.meaning,
   });
 
   @override
@@ -24,7 +20,8 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
 
   @override
   Widget build(BuildContext context) {
-    String referenceName = widget.meaning.reference!.reference.valueOrThrow;
+    String referenceName =
+        'Referência de teste'; // TODO: obter o nome da referência
     String referencedisplayedName = referenceName.length > 30
         ? '${referenceName.substring(0, 15)}...'
         : referenceName;
@@ -66,20 +63,21 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                       children: [
                         RichText(
                           textAlign: TextAlign.left,
-                          text: TextSpan(
-                            style: const TextStyle(
+                          text: const TextSpan(
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
                             ),
                             children: [
-                              const TextSpan(
-                                text: 'Siginificado: ',
+                              TextSpan(
+                                text: 'Significado: ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextSpan(
-                                  text: widget.meaning.meaning.valueOrThrow),
+                                  text:
+                                      'Significado'), // TODO: colocar para a palavra, não para significado
                             ],
                           ),
                         ),
@@ -112,31 +110,31 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                         //   ),
                         // ),
                         // const SizedBox(height: 5),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 0), // Ajuste aqui
-                          child: RichText(
-                            textAlign: TextAlign.left,
-                            text: TextSpan(
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                              ),
-                              children: [
-                                const TextSpan(
-                                  text: 'Comentário: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: widget.meaning.comment.valueOrNull ??
-                                      'Indisponível',
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsets.only(left: 0), // Ajuste aqui
+                        //   child: RichText(
+                        //     textAlign: TextAlign.left,
+                        //     text: TextSpan(
+                        //       style: const TextStyle(
+                        //         color: Colors.black,
+                        //         fontSize: 18,
+                        //       ),
+                        //       children: [
+                        //         const TextSpan(
+                        //           text: 'Comentário: ',
+                        //           style: TextStyle(
+                        //             fontWeight: FontWeight.bold,
+                        //           ),
+                        //         ),
+                        //         TextSpan(
+                        //           text: widget.meaning.comment.valueOrNull ??
+                        //               'Indisponível',
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

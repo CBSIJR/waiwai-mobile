@@ -1,17 +1,13 @@
 import 'package:dicionario_waiwai/components/layouts.dart';
-import 'package:dicionario_waiwai/models/legacy/word.dart';
 import 'package:flutter/material.dart';
-import 'package:dicionario_waiwai/components/myExpansionTile.dart';
+// import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 
 class WordScreen extends StatefulWidget {
 //   final List<Meaning> meanings;
-  final DbWord word;
-
-  const WordScreen({
-    super.key,
-    // required this.meanings,
-    required this.word,
-  });
+  final word;
+  const WordScreen({super.key, required this.word
+      // required this.meanings,
+      });
 
   @override
   State<WordScreen> createState() => _WordScreenState();
@@ -46,12 +42,12 @@ class _WordScreenState extends State<WordScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          widget.word.word.valueOrThrow,
+                          'Palavra', // TODO: Implementar palavra via provider
                           textAlign: TextAlign.start,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -82,7 +78,6 @@ class _WordScreenState extends State<WordScreen> {
                                   100, // widget.total_words, #TODO: Implementar total_words via provider
                               itemBuilder: (context, index) {
                                 //final meaning = widget.word.meanings[index];
-                                print(widget.word);
                                 return Text("olaaa");
                                 // return Padding(
                                 //   padding: const EdgeInsets.all(8.0),

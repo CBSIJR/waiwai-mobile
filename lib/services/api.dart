@@ -6,6 +6,9 @@ import 'package:http/http.dart';
 import 'package:dicionario_waiwai/util/app_url.dart';
 import 'package:drift/drift.dart';
 
+// https://gist.githubusercontent.com/shubie/07d238f857632eaacea8e4c60d700b2d/raw/cf4c60c4c4f6cc0b0176ea667b2f4c8b4e91c7cc/flutter-thursday-13-02.dart
+//https://dart.dev/tools/linter-rules/avoid_print
+
 abstract class Message {
   String get detail;
   bool get status;
@@ -44,12 +47,12 @@ class WaiWaiApiProvider with ChangeNotifier {
       List<dynamic> jsonResponse = jsonDecode(response.body);
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
-      List<UserCompanion> users =
+      List<UsersCompanion> users =
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
         final fullName = item['full_name'] as String;
 
-        return UserCompanion.insert(id: Value(id), fullName: fullName);
+        return UsersCompanion.insert(id: Value(id), fullName: fullName);
       }).toList();
       result = MessageApi(detail: 'Successful', status: true, data: users);
     } else {
@@ -71,12 +74,12 @@ class WaiWaiApiProvider with ChangeNotifier {
       List<dynamic> jsonResponse = jsonDecode(response.body);
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
-      List<ReferenceCompanion> references =
+      List<ReferencesCompanion> references =
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
         final reference = item['reference'] as String;
         final url = item['url'] as String?;
-        return ReferenceCompanion.insert(
+        return ReferencesCompanion.insert(
             id: Value(id), reference: reference, url: Value(url));
       }).toList();
       result = MessageApi(detail: 'Successful', status: true, data: references);
@@ -99,7 +102,7 @@ class WaiWaiApiProvider with ChangeNotifier {
       List<dynamic> jsonResponse = jsonDecode(response.body);
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
-      List<WordCompanion> words =
+      List<WordsCompanion> words =
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
         final word = item['word'] as String;
@@ -108,7 +111,7 @@ class WaiWaiApiProvider with ChangeNotifier {
         final updateAt = DateTime.parse(item['update_at'] as String);
         final userId = item['user_id'] as int;
 
-        return WordCompanion.insert(
+        return WordsCompanion.insert(
             id: Value(id),
             word: word,
             phonemic: Value(phonemic),
@@ -136,7 +139,7 @@ class WaiWaiApiProvider with ChangeNotifier {
       List<dynamic> jsonResponse = jsonDecode(response.body);
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
-      List<MeaningCompanion> words =
+      List<MeaningsCompanion> words =
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
         final meaning = item['meaning'] as String;
@@ -147,7 +150,7 @@ class WaiWaiApiProvider with ChangeNotifier {
         final referenceId = item['reference_id'] as int;
         final userId = item['user_id'] as int;
 
-        return MeaningCompanion.insert(
+        return MeaningsCompanion.insert(
             id: Value(id),
             meaning: meaning,
             comment: Value(comment),

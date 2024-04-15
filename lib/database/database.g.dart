@@ -3,11 +3,11 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $UserTable extends User with TableInfo<$UserTable, User> {
+class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UserTable(this.attachedDatabase, [this._alias]);
+  $UsersTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -25,7 +25,7 @@ class $UserTable extends User with TableInfo<$UserTable, User> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'user';
+  static const String $name = 'users';
   @override
   VerificationContext validateIntegrity(Insertable<User> instance,
       {bool isInserting = false}) {
@@ -57,8 +57,8 @@ class $UserTable extends User with TableInfo<$UserTable, User> {
   }
 
   @override
-  $UserTable createAlias(String alias) {
-    return $UserTable(attachedDatabase, alias);
+  $UsersTable createAlias(String alias) {
+    return $UsersTable(attachedDatabase, alias);
   }
 }
 
@@ -74,8 +74,8 @@ class User extends DataClass implements Insertable<User> {
     return map;
   }
 
-  UserCompanion toCompanion(bool nullToAbsent) {
-    return UserCompanion(
+  UsersCompanion toCompanion(bool nullToAbsent) {
+    return UsersCompanion(
       id: Value(id),
       fullName: Value(fullName),
     );
@@ -119,14 +119,14 @@ class User extends DataClass implements Insertable<User> {
       (other is User && other.id == this.id && other.fullName == this.fullName);
 }
 
-class UserCompanion extends UpdateCompanion<User> {
+class UsersCompanion extends UpdateCompanion<User> {
   final Value<int> id;
   final Value<String> fullName;
-  const UserCompanion({
+  const UsersCompanion({
     this.id = const Value.absent(),
     this.fullName = const Value.absent(),
   });
-  UserCompanion.insert({
+  UsersCompanion.insert({
     this.id = const Value.absent(),
     required String fullName,
   }) : fullName = Value(fullName);
@@ -140,8 +140,8 @@ class UserCompanion extends UpdateCompanion<User> {
     });
   }
 
-  UserCompanion copyWith({Value<int>? id, Value<String>? fullName}) {
-    return UserCompanion(
+  UsersCompanion copyWith({Value<int>? id, Value<String>? fullName}) {
+    return UsersCompanion(
       id: id ?? this.id,
       fullName: fullName ?? this.fullName,
     );
@@ -161,7 +161,7 @@ class UserCompanion extends UpdateCompanion<User> {
 
   @override
   String toString() {
-    return (StringBuffer('UserCompanion(')
+    return (StringBuffer('UsersCompanion(')
           ..write('id: $id, ')
           ..write('fullName: $fullName')
           ..write(')'))
@@ -169,12 +169,12 @@ class UserCompanion extends UpdateCompanion<User> {
   }
 }
 
-class $ReferenceTable extends Reference
-    with TableInfo<$ReferenceTable, Reference> {
+class $ReferencesTable extends References
+    with TableInfo<$ReferencesTable, Reference> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ReferenceTable(this.attachedDatabase, [this._alias]);
+  $ReferencesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -197,7 +197,7 @@ class $ReferenceTable extends Reference
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'reference';
+  static const String $name = 'references';
   @override
   VerificationContext validateIntegrity(Insertable<Reference> instance,
       {bool isInserting = false}) {
@@ -235,8 +235,8 @@ class $ReferenceTable extends Reference
   }
 
   @override
-  $ReferenceTable createAlias(String alias) {
-    return $ReferenceTable(attachedDatabase, alias);
+  $ReferencesTable createAlias(String alias) {
+    return $ReferencesTable(attachedDatabase, alias);
   }
 }
 
@@ -256,8 +256,8 @@ class Reference extends DataClass implements Insertable<Reference> {
     return map;
   }
 
-  ReferenceCompanion toCompanion(bool nullToAbsent) {
-    return ReferenceCompanion(
+  ReferencesCompanion toCompanion(bool nullToAbsent) {
+    return ReferencesCompanion(
       id: Value(id),
       reference: Value(reference),
       url: url == null && nullToAbsent ? const Value.absent() : Value(url),
@@ -313,16 +313,16 @@ class Reference extends DataClass implements Insertable<Reference> {
           other.url == this.url);
 }
 
-class ReferenceCompanion extends UpdateCompanion<Reference> {
+class ReferencesCompanion extends UpdateCompanion<Reference> {
   final Value<int> id;
   final Value<String> reference;
   final Value<String?> url;
-  const ReferenceCompanion({
+  const ReferencesCompanion({
     this.id = const Value.absent(),
     this.reference = const Value.absent(),
     this.url = const Value.absent(),
   });
-  ReferenceCompanion.insert({
+  ReferencesCompanion.insert({
     this.id = const Value.absent(),
     required String reference,
     this.url = const Value.absent(),
@@ -339,9 +339,9 @@ class ReferenceCompanion extends UpdateCompanion<Reference> {
     });
   }
 
-  ReferenceCompanion copyWith(
+  ReferencesCompanion copyWith(
       {Value<int>? id, Value<String>? reference, Value<String?>? url}) {
-    return ReferenceCompanion(
+    return ReferencesCompanion(
       id: id ?? this.id,
       reference: reference ?? this.reference,
       url: url ?? this.url,
@@ -365,7 +365,7 @@ class ReferenceCompanion extends UpdateCompanion<Reference> {
 
   @override
   String toString() {
-    return (StringBuffer('ReferenceCompanion(')
+    return (StringBuffer('ReferencesCompanion(')
           ..write('id: $id, ')
           ..write('reference: $reference, ')
           ..write('url: $url')
@@ -374,11 +374,11 @@ class ReferenceCompanion extends UpdateCompanion<Reference> {
   }
 }
 
-class $WordTable extends Word with TableInfo<$WordTable, Word> {
+class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $WordTable(this.attachedDatabase, [this._alias]);
+  $WordsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -414,7 +414,7 @@ class $WordTable extends Word with TableInfo<$WordTable, Word> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES user (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
   @override
   List<GeneratedColumn> get $columns =>
       [id, word, phonemic, createdAt, updateAt, userId];
@@ -422,7 +422,7 @@ class $WordTable extends Word with TableInfo<$WordTable, Word> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'word';
+  static const String $name = 'words';
   @override
   VerificationContext validateIntegrity(Insertable<Word> instance,
       {bool isInserting = false}) {
@@ -484,8 +484,8 @@ class $WordTable extends Word with TableInfo<$WordTable, Word> {
   }
 
   @override
-  $WordTable createAlias(String alias) {
-    return $WordTable(attachedDatabase, alias);
+  $WordsTable createAlias(String alias) {
+    return $WordsTable(attachedDatabase, alias);
   }
 }
 
@@ -517,8 +517,8 @@ class Word extends DataClass implements Insertable<Word> {
     return map;
   }
 
-  WordCompanion toCompanion(bool nullToAbsent) {
-    return WordCompanion(
+  WordsCompanion toCompanion(bool nullToAbsent) {
+    return WordsCompanion(
       id: Value(id),
       word: Value(word),
       phonemic: phonemic == null && nullToAbsent
@@ -598,14 +598,14 @@ class Word extends DataClass implements Insertable<Word> {
           other.userId == this.userId);
 }
 
-class WordCompanion extends UpdateCompanion<Word> {
+class WordsCompanion extends UpdateCompanion<Word> {
   final Value<int> id;
   final Value<String> word;
   final Value<String?> phonemic;
   final Value<DateTime> createdAt;
   final Value<DateTime> updateAt;
   final Value<int> userId;
-  const WordCompanion({
+  const WordsCompanion({
     this.id = const Value.absent(),
     this.word = const Value.absent(),
     this.phonemic = const Value.absent(),
@@ -613,7 +613,7 @@ class WordCompanion extends UpdateCompanion<Word> {
     this.updateAt = const Value.absent(),
     this.userId = const Value.absent(),
   });
-  WordCompanion.insert({
+  WordsCompanion.insert({
     this.id = const Value.absent(),
     required String word,
     this.phonemic = const Value.absent(),
@@ -642,14 +642,14 @@ class WordCompanion extends UpdateCompanion<Word> {
     });
   }
 
-  WordCompanion copyWith(
+  WordsCompanion copyWith(
       {Value<int>? id,
       Value<String>? word,
       Value<String?>? phonemic,
       Value<DateTime>? createdAt,
       Value<DateTime>? updateAt,
       Value<int>? userId}) {
-    return WordCompanion(
+    return WordsCompanion(
       id: id ?? this.id,
       word: word ?? this.word,
       phonemic: phonemic ?? this.phonemic,
@@ -685,7 +685,7 @@ class WordCompanion extends UpdateCompanion<Word> {
 
   @override
   String toString() {
-    return (StringBuffer('WordCompanion(')
+    return (StringBuffer('WordsCompanion(')
           ..write('id: $id, ')
           ..write('word: $word, ')
           ..write('phonemic: $phonemic, ')
@@ -697,11 +697,11 @@ class WordCompanion extends UpdateCompanion<Word> {
   }
 }
 
-class $MeaningTable extends Meaning with TableInfo<$MeaningTable, Meaning> {
+class $MeaningsTable extends Meanings with TableInfo<$MeaningsTable, Meaning> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $MeaningTable(this.attachedDatabase, [this._alias]);
+  $MeaningsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -738,7 +738,7 @@ class $MeaningTable extends Meaning with TableInfo<$MeaningTable, Meaning> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES word (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES words (id)'));
   static const VerificationMeta _referenceIdMeta =
       const VerificationMeta('referenceId');
   @override
@@ -747,7 +747,7 @@ class $MeaningTable extends Meaning with TableInfo<$MeaningTable, Meaning> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES reference (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES "references" (id)'));
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<int> userId = GeneratedColumn<int>(
@@ -755,7 +755,7 @@ class $MeaningTable extends Meaning with TableInfo<$MeaningTable, Meaning> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES user (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
   @override
   List<GeneratedColumn> get $columns =>
       [id, meaning, comment, chapterId, entryId, wordId, referenceId, userId];
@@ -763,7 +763,7 @@ class $MeaningTable extends Meaning with TableInfo<$MeaningTable, Meaning> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'meaning';
+  static const String $name = 'meanings';
   @override
   VerificationContext validateIntegrity(Insertable<Meaning> instance,
       {bool isInserting = false}) {
@@ -839,8 +839,8 @@ class $MeaningTable extends Meaning with TableInfo<$MeaningTable, Meaning> {
   }
 
   @override
-  $MeaningTable createAlias(String alias) {
-    return $MeaningTable(attachedDatabase, alias);
+  $MeaningsTable createAlias(String alias) {
+    return $MeaningsTable(attachedDatabase, alias);
   }
 }
 
@@ -882,8 +882,8 @@ class Meaning extends DataClass implements Insertable<Meaning> {
     return map;
   }
 
-  MeaningCompanion toCompanion(bool nullToAbsent) {
-    return MeaningCompanion(
+  MeaningsCompanion toCompanion(bool nullToAbsent) {
+    return MeaningsCompanion(
       id: Value(id),
       meaning: Value(meaning),
       comment: comment == null && nullToAbsent
@@ -981,7 +981,7 @@ class Meaning extends DataClass implements Insertable<Meaning> {
           other.userId == this.userId);
 }
 
-class MeaningCompanion extends UpdateCompanion<Meaning> {
+class MeaningsCompanion extends UpdateCompanion<Meaning> {
   final Value<int> id;
   final Value<String> meaning;
   final Value<String?> comment;
@@ -990,7 +990,7 @@ class MeaningCompanion extends UpdateCompanion<Meaning> {
   final Value<int> wordId;
   final Value<int> referenceId;
   final Value<int> userId;
-  const MeaningCompanion({
+  const MeaningsCompanion({
     this.id = const Value.absent(),
     this.meaning = const Value.absent(),
     this.comment = const Value.absent(),
@@ -1000,7 +1000,7 @@ class MeaningCompanion extends UpdateCompanion<Meaning> {
     this.referenceId = const Value.absent(),
     this.userId = const Value.absent(),
   });
-  MeaningCompanion.insert({
+  MeaningsCompanion.insert({
     this.id = const Value.absent(),
     required String meaning,
     this.comment = const Value.absent(),
@@ -1035,7 +1035,7 @@ class MeaningCompanion extends UpdateCompanion<Meaning> {
     });
   }
 
-  MeaningCompanion copyWith(
+  MeaningsCompanion copyWith(
       {Value<int>? id,
       Value<String>? meaning,
       Value<String?>? comment,
@@ -1044,7 +1044,7 @@ class MeaningCompanion extends UpdateCompanion<Meaning> {
       Value<int>? wordId,
       Value<int>? referenceId,
       Value<int>? userId}) {
-    return MeaningCompanion(
+    return MeaningsCompanion(
       id: id ?? this.id,
       meaning: meaning ?? this.meaning,
       comment: comment ?? this.comment,
@@ -1088,7 +1088,7 @@ class MeaningCompanion extends UpdateCompanion<Meaning> {
 
   @override
   String toString() {
-    return (StringBuffer('MeaningCompanion(')
+    return (StringBuffer('MeaningsCompanion(')
           ..write('id: $id, ')
           ..write('meaning: $meaning, ')
           ..write('comment: $comment, ')
@@ -1104,14 +1104,14 @@ class MeaningCompanion extends UpdateCompanion<Meaning> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
-  late final $UserTable user = $UserTable(this);
-  late final $ReferenceTable reference = $ReferenceTable(this);
-  late final $WordTable word = $WordTable(this);
-  late final $MeaningTable meaning = $MeaningTable(this);
+  late final $UsersTable users = $UsersTable(this);
+  late final $ReferencesTable references = $ReferencesTable(this);
+  late final $WordsTable words = $WordsTable(this);
+  late final $MeaningsTable meanings = $MeaningsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [user, reference, word, meaning];
+      [users, references, words, meanings];
 }

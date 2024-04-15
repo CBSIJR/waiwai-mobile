@@ -4,9 +4,8 @@ import 'dart:async';
 import 'package:dicionario_waiwai/components/icons.dart';
 import 'package:dicionario_waiwai/components/dialog/dialogupdate.dart';
 import 'package:dicionario_waiwai/components/sidebar_buttons.dart';
-import 'package:dicionario_waiwai/database/database.dart';
+// import 'package:dicionario_waiwai/database/database.dart';
 import 'package:dicionario_waiwai/main.dart';
-import 'package:dicionario_waiwai/screens/home/state.dart';
 import 'package:dicionario_waiwai/services/api.dart';
 // import 'package:dicionario_waiwai/providers/provider.dart';
 import 'package:dicionario_waiwai/screens/about.dart';
@@ -41,7 +40,7 @@ class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     WaiWaiApiProvider apiProvider = Provider.of<WaiWaiApiProvider>(context);
-    WordState wordState = Provider.of<WordState>(context);
+
     // logout() async {
     //   //usuario vai remover o token do local storage
     //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -68,7 +67,6 @@ class _SideBarState extends State<SideBar> {
 
     updateDatabase(BuildContext context) async {
       updateOnProgressDialog(context);
-      MessageApi result;
       try {
         bool isConnected = await InternetConnectionChecker().hasConnection;
         if (!isConnected) {
@@ -83,7 +81,6 @@ class _SideBarState extends State<SideBar> {
           Navigator.of(context).pop();
           updateSuccessDialog(context);
         } catch (e) {
-          print(e.toString());
           throw MessageApiException(detail: e.toString());
         }
       } on MessageApiException catch (e) {
