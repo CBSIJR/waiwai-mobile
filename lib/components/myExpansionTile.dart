@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 class MyExpantionTile extends StatefulWidget {
   MeaningWithReference meaning;
+  int index;
 
   MyExpantionTile({
     super.key,
     required this.meaning,
+    required this.index,
   });
 
   @override
@@ -24,34 +26,22 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
 
   @override
   Widget build(BuildContext context) {
-    String referenceName =
-        widget.meaning.$2.reference; // TODO: obter o nome da referência
-    String referencedisplayedName = referenceName.length > 25
-        ? '${referenceName.substring(0, 25)}...'
-        : referenceName;
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Theme(
         data: ThemeData(
+          useMaterial3: true,
           dividerColor: Colors.transparent,
         ),
         child: ExpansionTile(
+          controlAffinity: ListTileControlAffinity.leading,
           title: Text(
-            referencedisplayedName,
+            widget.meaning.$1.meaning,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -65,27 +55,25 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RichText(
-                          textAlign: TextAlign.left,
-                          text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                            ),
-                            children: [
-                              const TextSpan(
-                                text: 'Significado: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                  text: widget.meaning.$1
-                                      .meaning), // TODO: colocar para a palavra, não para significado
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 5),
+                        // RichText(
+                        //   textAlign: TextAlign.left,
+                        //   text: TextSpan(
+                        //     style: const TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 15,
+                        //     ),
+                        //     children: [
+                        //       const TextSpan(
+                        //         text: 'Significado: ',
+                        //         style: TextStyle(
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       ),
+                        //       TextSpan(text: widget.meaning.$1.meaning),
+                        //     ],
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 5),
                         // Padding(
                         //   padding:
                         //       const EdgeInsets.only(left: 0), // Ajuste aqui
@@ -114,29 +102,71 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                         //   ),
                         // ),
                         // const SizedBox(height: 5),
-                        // Padding(
-                        //   padding:
-                        //       const EdgeInsets.only(left: 0), // Ajuste aqui
-                        //   child: RichText(
-                        //     textAlign: TextAlign.left,
-                        //     text: TextSpan(
-                        //       style: const TextStyle(
-                        //         color: Colors.black,
-                        //         fontSize: 18,
-                        //       ),
-                        //       children: [
-                        //         const TextSpan(
-                        //           text: 'Comentário: ',
-                        //           style: TextStyle(
-                        //             fontWeight: FontWeight.bold,
-                        //           ),
-                        //         ),
-                        //         TextSpan(
-                        //           text: widget.meaning.comment.valueOrNull ??
-                        //               'Indisponível',
-                        //         ),
-                        //       ],
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 0), // Ajuste aqui
+                          child: RichText(
+                            textAlign: TextAlign.left,
+                            text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                              ),
+                              children: [
+                                const TextSpan(
+                                  text: 'Comentário: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: widget.meaning.$1.comment ?? '-',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 0), // Ajuste aqui
+                          child: RichText(
+                            textAlign: TextAlign.left,
+                            text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                              ),
+                              children: [
+                                const TextSpan(
+                                  text: 'Referência: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: widget.meaning.$2.reference,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // RichText(
+                        //   textAlign: TextAlign.left,
+                        //   text: TextSpan(
+                        //     style: const TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 15,
                         //     ),
+                        //     children: [
+                        //       TextSpan(
+                        //         text:
+                        //             'Referência: ${}',
+                        //         style: const TextStyle(
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       )
+                        //     ],
                         //   ),
                         // ),
                       ],

@@ -21,6 +21,10 @@ class _WordComponentState extends State<WordComponent> {
     String wordText = widget.word.$1.word;
     final meaningList = widget.word.$2.map((e) => e.$1.meaning).toList();
     String meaningText = meaningList.join(', ');
+    meaningText = meaningText.length > 15
+        ? '${meaningText.substring(0, 15)}...'
+        : meaningText;
+    //meaningText = meaningText.length > 15 ? '$meaningText...' : meaningText;
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
@@ -42,7 +46,7 @@ class _WordComponentState extends State<WordComponent> {
             ),
             const SizedBox(height: 10),
             Text(
-              meaningText, // TODO: Implementar significado via provider
+              meaningText,
               style: const TextStyle(
                 fontSize: 16.0,
               ),

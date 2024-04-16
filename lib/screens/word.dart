@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 // import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 
 class WordScreen extends StatefulWidget {
-//   final List<Meaning> meanings;
-  WordWithMeaning word;
-  WordScreen({super.key, required this.word
+  final WordWithMeaning word;
+  const WordScreen({super.key, required this.word
       // required this.meanings,
       });
 
@@ -44,12 +43,13 @@ class _WordScreenState extends State<WordScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          'Palavra', // TODO: Implementar palavra via provider
+                          widget.word.$1
+                              .word, // TODO: Implementar palavra via provider
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -97,8 +97,7 @@ class _WordScreenState extends State<WordScreen> {
                                       ],
                                     ),
                                     child: MyExpantionTile(
-                                      meaning: meaning,
-                                    ),
+                                        meaning: meaning, index: index),
                                   ),
                                 );
                               },
