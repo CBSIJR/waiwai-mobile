@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 class WordState extends ChangeNotifier {
   final providerDb;
   late WordRepository _repository;
-  final List _list = [];
+  final WordList _list = [];
   int _page = 1;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   late int _total = 0;
   late int _pageTotal = 0;
   final int _pageSize = 50;
-  int get total => _total;
+  final WordList _listFiltered = [];
 
+  int get total => _total;
   int get page => _page;
   int get pageSize => _pageSize;
   List get words => _list;
@@ -40,5 +41,12 @@ class WordState extends ChangeNotifier {
     _page++;
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> getByFilter(String criteria) async {
+    if (criteria.isEmpty) return;
+
+    _isLoading = true;
+    // _listFiltered.addAll(await _repository)
   }
 }
