@@ -12,6 +12,13 @@ updateFailedDialog(BuildContext context, String e) => showDialog(
               child: const Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop(); // Fecha o diálogo
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                  (route) => false,
+                );
               },
             ),
           ],

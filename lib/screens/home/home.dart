@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         return true;
       },
+
       child: ListView.builder(
         controller: _scrollController,
         itemCount: state.total,

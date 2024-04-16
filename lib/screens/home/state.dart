@@ -12,20 +12,21 @@ class WordState extends ChangeNotifier {
   bool get isLoading => _isLoading;
   late int _total = 0;
   late int _pageTotal = 0;
-  int pageSize = 50;
+  final int _pageSize = 50;
   int get total => _total;
 
   int get page => _page;
+  int get pageSize => _pageSize;
   List get words => _list;
   WordState(this.providerDb) {
     _repository = WordRepository(providerDb);
   }
 
   Future<void> fetchWords() async {
-    if (_page > 1) return;
+    if (_page > 1 || _total != 0) return;
     _isLoading = true;
     _total = await _repository.count();
-    _pageTotal = (_total / pageSize).ceil();
+    _pageTotal = (_total / _pageSize).ceil();
     _list.addAll(await _repository.getByPage(page: _page, size: pageSize));
     _page++;
     _isLoading = false;
@@ -35,7 +36,7 @@ class WordState extends ChangeNotifier {
   Future<void> getByPage() async {
     if (_isLoading || _page > _pageTotal) return;
     _isLoading = true;
-    _list.addAll(await _repository.getByPage(page: _page, size: pageSize));
+    _list.addAll(await _repository.getByPage(page: _page, size: _pageSize));
     _page++;
     _isLoading = false;
     notifyListeners();

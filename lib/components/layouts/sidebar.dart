@@ -73,6 +73,7 @@ class _SideBarState extends State<SideBar> {
           throw MessageApiException(detail: 'Sem conexão com a internet');
         }
         try {
+          // TODO: notify listeners
           await databaseProvider.insertMany(
               (await apiProvider.getExportUsers()).data,
               (await apiProvider.getExportReferences()).data,
