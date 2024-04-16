@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 
 class MyExpantionTile extends StatefulWidget {
   final MeaningWithReference meaning;
-  final int index;
 
   const MyExpantionTile({
     super.key,
     required this.meaning,
-    required this.index,
   });
 
   @override

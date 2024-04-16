@@ -19,11 +19,6 @@ class WordScreen extends StatefulWidget {
 
 class _WordScreenState extends State<WordScreen> {
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MainScreenLayout(
       body: ListView(
@@ -93,8 +88,7 @@ class _WordScreenState extends State<WordScreen> {
                                         ),
                                       ],
                                     ),
-                                    child: MyExpantionTile(
-                                        meaning: meaning, index: index),
+                                    child: MyExpantionTile(meaning: meaning),
                                   ),
                                 );
                               },
@@ -181,5 +175,10 @@ class _WordScreenState extends State<WordScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
