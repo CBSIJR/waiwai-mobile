@@ -1,9 +1,11 @@
 import 'package:dicionario_waiwai/components/icons.dart';
+import 'package:dicionario_waiwai/components/image.dart';
 import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
 // import 'package:dicionario_waiwai/components/myExpansionTile.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class WordScreen extends StatefulWidget {
   final WordWithMeaning word;
@@ -16,8 +18,6 @@ class WordScreen extends StatefulWidget {
 }
 
 class _WordScreenState extends State<WordScreen> {
-//   bool _isLoggedIn = false;
-
   @override
   void dispose() {
     super.dispose();
@@ -25,12 +25,12 @@ class _WordScreenState extends State<WordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // _checkLoginStatus();
     return MainScreenLayout(
       body: ListView(
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin:
+                const EdgeInsets.only(top: 0, left: 20, right: 20, bottom: 20),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -46,8 +46,7 @@ class _WordScreenState extends State<WordScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          widget.word.$1
-                              .word, // TODO: Implementar palavra via provider
+                          widget.word.$1.word,
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontSize: 24,
@@ -76,11 +75,9 @@ class _WordScreenState extends State<WordScreen> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: widget.word.$2
-                                  .length, // widget.total_words, #TODO: Implementar total_words via provider
+                              itemCount: widget.word.$2.length,
                               itemBuilder: (context, index) {
                                 final meaning = widget.word.$2[index];
-                                // return Text("olaaa");
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
@@ -132,50 +129,57 @@ class _WordScreenState extends State<WordScreen> {
                 const SizedBox(
                   height: 5,
                 ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text(
+                    "Anexo(s)",
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    // aspectRatio: 2.0,
+                    // height: 200,
+                    // width: MediaQuery.of(context).size.width,
+                    // viewportFraction: 0.8,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    autoPlay: true,
+                  ),
+                  items: [1, 2].map((i) {
+                    return Container(
+                        child: imageContainer(context, svgAssetNoThumb));
+                    // return Builder(
+                    //   builder: (BuildContext context) {
+                    //     return Container(
+                    //       width: MediaQuery.of(context).size.width,
+                    //       margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    //       // decoration: const BoxDecoration(color: Colors.amber),
+                    //       child: Container(
+                    //         height: 200,
+                    //         margin: const EdgeInsets.symmetric(horizontal: 23),
+                    //         alignment: Alignment.center,
+                    //         child: ClipRRect(
+                    //           borderRadius: BorderRadius.circular(18),
+                    //           child: svgAssetNoThumb,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                  }).toList(),
+                ),
               ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 8.0,
-              right: 8.0,
-              bottom: 10,
-            ),
-            child: Container(
-              height: 200,
-              margin: const EdgeInsets.symmetric(horizontal: 23),
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(20),
-              //     border: Border.all(
-              //       color: Colors.black,
-              //     ),
-              //   ),
-              alignment: Alignment.center,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: svgAssetNoThumb,
-              ),
             ),
           ),
         ],
       ),
     );
-
-    // Scaffold(
-    //   backgroundColor: const Color(0xFFF2F2F2),
-    //   appBar: MyAppBar(),
-    //   drawer: _isLoggedIn ? const SideBarLogged() : const SideBarNotLogged(),
-    //   body:
-    // );
   }
-
-  // Método para verificar o status de login
-//   void _checkLoginStatus() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     setState(() {
-//       _isLoggedIn = prefs.getBool('logado') ??
-//           false; // Se não existir o status de login, assume como falso
-//     });
-//   }
 }
