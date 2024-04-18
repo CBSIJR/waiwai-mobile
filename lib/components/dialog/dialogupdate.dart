@@ -52,23 +52,24 @@ updateSuccessDialog(BuildContext context) => showDialog(
     );
 
 updateOnProgressDialog(BuildContext context) => showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) => StatefulBuilder(
-          builder: (context, setState) {
-            return const AlertDialog(
-              title: Text('Atualizando palavras'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                      'Por favor, não feche o aplicativo. Sua base de dados local está sendo atualizada.'),
-                  SizedBox(height: 20),
-                  Center(
-                    child: LinearProgressIndicator(),
-                  )
-                ],
-              ),
-            );
-          },
-        ));
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return const AlertDialog(
+            title: Text('Atualizando palavras'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                    'Por favor, não feche o aplicativo. Sua base de dados local está sendo atualizada.'),
+                SizedBox(height: 20),
+                Center(
+                  child: LinearProgressIndicator(),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );

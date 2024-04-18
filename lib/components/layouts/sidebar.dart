@@ -79,6 +79,7 @@ class _SideBarState extends State<SideBar> {
               (await apiProvider.getExportReferences()).data,
               (await apiProvider.getExportWords()).data,
               (await apiProvider.getExportMeanings()).data);
+              
           Navigator.of(context).pop();
           updateSuccessDialog(context);
         } catch (e) {

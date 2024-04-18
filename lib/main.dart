@@ -19,13 +19,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-              create: (context) => WordState(databaseProvider)),
-        ],
-        child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
-        ));
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => WordState(databaseProvider)),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(),
+      ),
+    );
   }
 }
