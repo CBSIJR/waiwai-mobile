@@ -4,14 +4,11 @@ import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
-// import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class WordScreen extends StatefulWidget {
   final WordWithMeaning word;
-  const WordScreen({super.key, required this.word
-      // required this.meanings,
-      });
+  const WordScreen({super.key, required this.word});
 
   @override
   State<WordScreen> createState() => _WordScreenState();
@@ -138,10 +135,6 @@ class _WordScreenState extends State<WordScreen> {
                 ),
                 CarouselSlider(
                   options: CarouselOptions(
-                    // aspectRatio: 2.0,
-                    // height: 200,
-                    // width: MediaQuery.of(context).size.width,
-                    // viewportFraction: 0.8,
                     enlargeCenterPage: true,
                     scrollDirection: Axis.horizontal,
                     autoPlay: true,
@@ -149,24 +142,6 @@ class _WordScreenState extends State<WordScreen> {
                   items: [1, 2].map((i) {
                     return Container(
                         child: imageContainer(context, svgAssetNoThumb));
-                    // return Builder(
-                    //   builder: (BuildContext context) {
-                    //     return Container(
-                    //       width: MediaQuery.of(context).size.width,
-                    //       margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    //       // decoration: const BoxDecoration(color: Colors.amber),
-                    //       child: Container(
-                    //         height: 200,
-                    //         margin: const EdgeInsets.symmetric(horizontal: 23),
-                    //         alignment: Alignment.center,
-                    //         child: ClipRRect(
-                    //           borderRadius: BorderRadius.circular(18),
-                    //           child: svgAssetNoThumb,
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    // );
                   }).toList(),
                 ),
               ],

@@ -6,9 +6,9 @@ import 'package:dicionario_waiwai/services/api.dart';
 
 class MainScreenLayout extends StatefulWidget {
   final Widget body;
-  Widget? floatingActionButton;
+  final Widget? floatingActionButton;
 
-  MainScreenLayout({
+  const MainScreenLayout({
     super.key,
     required this.body,
     this.floatingActionButton,

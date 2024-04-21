@@ -17,3 +17,6 @@ Widget svgAssetNotFound = SvgPicture.asset('assets/not-found.svg',
 
 Widget svgAssetNoThumb = SvgPicture.asset('assets/no-thumbnail.svg',
     semanticsLabel: 'Sem imagem para exibir');
+
+Widget svgAssetEmptyList = SvgPicture.asset('assets/empty-list.svg',
+    height: 250, semanticsLabel: 'Sem sem palavras na base de dados');
