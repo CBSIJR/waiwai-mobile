@@ -1,3 +1,5 @@
+import 'package:dicionario_waiwai/components/buttons.dart';
+import 'package:dicionario_waiwai/components/icons.dart';
 import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:dicionario_waiwai/components/word.dart';
 import 'package:dicionario_waiwai/screens/word.dart';
@@ -17,72 +19,91 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  bool _showArrowUpButton = false;
+  bool _showButtonToTop = false;
+
   @override
   void initState() {
     super.initState();
     Provider.of<WordState>(context, listen: false).fetchWords();
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 200) {
+        setState(() {
+          _showButtonToTop = true;
+        });
+      } else {
+        setState(() {
+          _showButtonToTop = false;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MainScreenLayout(
-        body: Consumer<WordState>(builder: (context, value, child) {
-      if (value.isLoading) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      return _buildWordList(value);
-    }));
+        body: Consumer<WordState>(
+          builder: (context, value, child) {
+            if (value.isLoading && value.total == 0) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (!value.isLoading && value.total == 0) {
+              return Center(
+                  child: Align(
+                      alignment: Alignment.center, child: svgAssetEmptyList));
+            }
+            return _buildWordList(value);
+          },
+        ),
+        floatingActionButton:
+            buttonsHomeScreen(_scrollController, showButton: _showButtonToTop));
   }
 
   Widget _buildWordList(WordState state) {
     return NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification is ScrollEndNotification) {
-          if (_scrollController.offset >= 200) {
-            setState(() {
-              _showArrowUpButton = true;
-            });
-          } else {
-            setState(() {
-              _showArrowUpButton = false;
-            });
+        onNotification: (scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            if (_scrollController.offset >= 200) {
+              setState(() {
+                _showButtonToTop = true;
+              });
+            } else {
+              setState(() {
+                _showButtonToTop = false;
+              });
+            }
           }
-        }
-        return true;
-      },
-
-      child: ListView.builder(
-        controller: _scrollController,
-        itemCount: state.total,
-        itemBuilder: (context, index) {
-          final word = state.words[index];
-          if (index == state.total) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          if (scrollNotification is ScrollEndNotification) {
+            if (_scrollController.position.extentAfter == 0) {
+              Provider.of<WordState>(context, listen: false).getByPage();
+            }
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: WordComponent(
-              word: word,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return WordScreen(word: word);
-                    },
-                  ),
-                );
-              },
-            ),
-          );
+          return true;
         },
-      ),
-    );
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: state.words.length,
+          itemBuilder: (context, index) {
+            final word = state.words[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: WordComponent(
+                word: word,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return WordScreen(word: word);
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ));
   }
 }

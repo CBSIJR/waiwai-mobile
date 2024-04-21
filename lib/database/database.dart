@@ -1,3 +1,5 @@
+// import 'dart:js_interop';
+
 import 'package:drift/drift.dart';
 import 'connection/connection.dart' as impl;
 
@@ -130,35 +132,49 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
   }
 
   @override
-  Future<WordList> getByPage({int page = 1, int size = 50}) async {
+  Future<WordList> getByPage(
+      {String criteria = '', int page = 1, int size = 50}) async {
     int offset = (page - 1) * size;
     int limit = size;
 
-    final wordWithLimit = Subquery(
-      _database.select(_database.words)
-        ..orderBy([(row) => OrderingTerm.asc(row.word)])
-        ..limit(limit, offset: offset),
+    final wordWithLimitQuery = _database.select(_database.words)
+      ..limit(limit, offset: offset);
+
+    final wordWithLimitSubquery = Subquery(
+      wordWithLimitQuery,
       's',
     );
-
-    final query = _database.select(wordWithLimit).join([
+    JoinedSelectStatement query = _database.select(wordWithLimitSubquery).join([
       innerJoin(
           _database.meanings,
-          wordWithLimit
+          wordWithLimitSubquery
               .ref(_database.words.id)
               .equalsExp(_database.meanings.wordId)),
       innerJoin(_database.references,
           _database.meanings.referenceId.equalsExp(_database.references.id))
-    ]);
-    // TODO: Executar a query de forma assíncrona
+    ])
+      ..orderBy([
+        OrderingTerm.asc(wordWithLimitSubquery.ref(_database.words.word)),
+        OrderingTerm.desc(
+            wordWithLimitSubquery.ref(_database.words.word).length)
+      ]);
+
+    if (criteria.isNotEmpty) {
+      query = query
+        ..where(wordWithLimitSubquery
+                .ref(_database.words.word)
+                .like('%$criteria%') |
+            _database.meanings.meaning.like('%$criteria%'));
+    }
+
     final result = await query.get().then((rows) {
       WordList wordList = [];
       for (var row in rows) {
-        final condition = wordList.where(
-            (element) => element.$1.id == row.readTable(wordWithLimit).id);
+        final condition = wordList.where((element) =>
+            element.$1.id == row.readTable(wordWithLimitSubquery).id);
         if (condition.isEmpty) {
           wordList.add((
-            row.readTable(wordWithLimit),
+            row.readTable(wordWithLimitSubquery),
             [
               (
                 row.readTable(_database.meanings),
@@ -204,6 +220,7 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
     final wordCount = result.read(amountOfWords);
     return wordCount ?? 0;
   }
+
 //   final AppDatabase _database;
 
 //   WordRepository(this._database);
