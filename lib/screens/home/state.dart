@@ -14,10 +14,10 @@ class WordState extends ChangeNotifier {
   late int _total = 0;
   late int _pageTotal = 0;
   final int _pageSize = 50;
-  final WordList _listFiltered = [];
 
   String _filter = '';
   String _filterOlder = '';
+  final WordList _listFiltered = [];
 
   WordList get listFiltered => _listFiltered;
   int get total => _total;
@@ -35,7 +35,7 @@ class WordState extends ChangeNotifier {
     _list.addAll(await _repository.getByPage(page: _page, size: pageSize));
     _total = await _repository.count();
     _pageTotal = (_total / _pageSize).ceil();
-    _page++;
+    if (total != 0) _page++;
     _isLoading = false;
     notifyListeners();
   }
@@ -53,8 +53,8 @@ class WordState extends ChangeNotifier {
     // TODO: implement getByFilter
     if (criteria.isEmpty) return;
     _isLoading = true;
-    _listFiltered
-        .addAll(await _repository.getByPage(page: _page, size: _pageSize));
+    _listFiltered.addAll(await _repository.getByPage(
+        criteria: criteria, page: _page, size: _pageSize));
     _isLoading = false;
     notifyListeners();
   }

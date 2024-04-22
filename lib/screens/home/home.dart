@@ -50,14 +50,18 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             if (!value.isLoading && value.total == 0) {
               return Center(
-                  child: Align(
-                      alignment: Alignment.center, child: svgAssetEmptyList));
+                child: Align(
+                    alignment: Alignment.center, child: svgAssetEmptyList),
+              );
             }
             return _buildWordList(value);
           },
         ),
-        floatingActionButton:
-            buttonsHomeScreen(_scrollController, showButton: _showButtonToTop));
+        floatingActionButton: buttonsHomeScreen(
+          context,
+          _scrollController,
+          showButton: _showButtonToTop,
+        ));
   }
 
   Widget _buildWordList(WordState state) {

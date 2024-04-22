@@ -62,6 +62,7 @@ class _ExampleUiLoadingAnimationState extends State<ExampleUiLoadingAnimation> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: const Key('toggleLoading'),
         onPressed: _toggleLoading,
         child: Icon(
           _isLoading ? Icons.hourglass_full : Icons.hourglass_bottom,

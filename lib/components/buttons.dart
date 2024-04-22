@@ -1,6 +1,10 @@
+import 'package:dicionario_waiwai/components/modal.dart';
 import 'package:flutter/material.dart';
 
-Widget buttonsHomeScreen(ScrollController scrollController,
+const Color colorBack = Color.fromARGB(255, 166, 52, 41);
+
+Widget buttonsHomeScreen(
+        BuildContext context, ScrollController scrollController,
         {bool showButton = false}) =>
     showButton
         ? Row(
@@ -12,17 +16,19 @@ Widget buttonsHomeScreen(ScrollController scrollController,
                     opacity: showButton ? 1.0 : 0,
                     duration: const Duration(milliseconds: 500),
                     child: FloatingActionButton(
+                      backgroundColor: colorBack,
                       key: const Key('filterButton'),
                       onPressed: () {
-                        // ShowFilterModal(context, _filterWords);
+                        ShowFilterModal(context);
                       },
                       child: const Icon(
                         Icons.filter_list,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     )),
               ),
               FloatingActionButton(
+                backgroundColor: colorBack,
                 key: const Key('scrollToTopButton'),
                 onPressed: () {
                   scrollController.animateTo(
@@ -33,17 +39,18 @@ Widget buttonsHomeScreen(ScrollController scrollController,
                 },
                 child: const Icon(
                   Icons.arrow_upward,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ],
           )
         : FloatingActionButton(
+            backgroundColor: colorBack,
             onPressed: () {
-              // ShowFilterModal(context, _filterWords);
+              ShowFilterModal(context);
             },
             child: const Icon(
               Icons.filter_list,
-              color: Colors.black,
+              color: Colors.white,
             ),
           );
