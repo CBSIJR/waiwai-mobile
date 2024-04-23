@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:dicionario_waiwai/screens/home/state.dart';
 
 void ShowFilterModal(
   BuildContext context,
 ) {
   //Function(String) filterFunction
 
-  TextEditingController nameWordController = TextEditingController();
-  TextEditingController filterController = TextEditingController();
+  TextEditingController formWordController = TextEditingController();
+  // TextEditingController filterController = TextEditingController();
 
   showModalBottomSheet(
     isScrollControlled:
@@ -40,7 +42,7 @@ void ShowFilterModal(
                 children: [
                   // Campo de busca por palavra
                   Padding(
-                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    padding: const EdgeInsets.only(left: 16, right: 16),
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
@@ -55,7 +57,7 @@ void ShowFilterModal(
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
-                              controller: nameWordController,
+                              controller: formWordController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Digite sua busca',
@@ -109,7 +111,8 @@ void ShowFilterModal(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (nameWordController.text.isEmpty) {
+                          final formword = formWordController.text;
+                          if (formword.isEmpty) {
                             Fluttertoast.showToast(
                                 msg: "Digite alguma palavra!",
                                 toastLength: Toast.LENGTH_SHORT,
@@ -118,8 +121,10 @@ void ShowFilterModal(
                                 backgroundColor: Colors.white,
                                 textColor: Colors.black,
                                 fontSize: 16.0);
+                            return;
                           }
-                          print(nameWordController.text);
+                          Provider.of<WordState>(context, listen: false)
+                              .filter = formword;
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,

@@ -1,30 +1,40 @@
-import 'dart:ffi';
-
 import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
 
 class WordState extends ChangeNotifier {
   final providerDb;
   late WordRepository _repository;
-  final WordList _list = [];
-  int _page = 1;
-  int _pageFiltered = 1;
   bool _isLoading = false;
-  bool get isLoading => _isLoading;
+  static const int _pageSize = 50;
+
+  int _page = 1;
+  final WordList _list = [];
+
   late int _total = 0;
+  final int _totalFiltered = 0;
   late int _pageTotal = 0;
-  final int _pageSize = 50;
+  final int _pageTotalFiltered = 0;
 
   String _filter = '';
-  String _filterOlder = '';
+  final String _filterOlder = '';
+  int _pageFiltered = 1;
   final WordList _listFiltered = [];
 
+  set filter(String value) => _filter = value;
+
+  bool get isLoading => _isLoading;
   WordList get listFiltered => _listFiltered;
   int get total => _total;
   int get page => _page;
   int get pageSize => _pageSize;
-  List get words => _list;
+  List get words {
+    return _list;
+    // if (_filter.isEmpty) return _list;
+    // return _listFiltered;
+  }
+
   List get pageFiltered => _listFiltered;
+
   WordState(this.providerDb) {
     _repository = WordRepository(providerDb);
   }
@@ -41,6 +51,7 @@ class WordState extends ChangeNotifier {
   }
 
   Future<void> getByPage() async {
+    print(_filter);
     if (_isLoading || _page > _pageTotal) return;
     _isLoading = true;
     _list.addAll(await _repository.getByPage(page: _page, size: _pageSize));
@@ -50,8 +61,11 @@ class WordState extends ChangeNotifier {
   }
 
   Future<void> getByFilter(String criteria) async {
-    // TODO: implement getByFilter
-    if (criteria.isEmpty) return;
+    if (criteria.isEmpty) {
+      _pageFiltered = 1;
+
+      return;
+    }
     _isLoading = true;
     _listFiltered.addAll(await _repository.getByPage(
         criteria: criteria, page: _page, size: _pageSize));

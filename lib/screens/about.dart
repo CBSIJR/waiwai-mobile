@@ -1,10 +1,8 @@
 import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dicionario_waiwai/components/layouts/appbar.dart';
 import 'package:dicionario_waiwai/components/aboutcard.dart';
 
-import '../components/layouts/sidebar.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
