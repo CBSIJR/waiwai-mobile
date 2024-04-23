@@ -3,13 +3,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:dicionario_waiwai/screens/home/state.dart';
 
-void ShowFilterModal(
+void showFilterModal(
   BuildContext context,
 ) {
-  //Function(String) filterFunction
-
-  TextEditingController formWordController = TextEditingController();
-  // TextEditingController filterController = TextEditingController();
+  WordState stateFilter = Provider.of<WordState>(context, listen: false);
+  TextEditingController formWordController =
+      TextEditingController(text: stateFilter.filter);
 
   showModalBottomSheet(
     isScrollControlled:
@@ -33,14 +32,12 @@ void ShowFilterModal(
           return SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom +
-                    20, // Adiciona espaço adicional para o teclado
-                top: 16, // Padding no topo do modal
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                top: 16,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Campo de busca por palavra
                   Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: Container(
@@ -57,6 +54,7 @@ void ShowFilterModal(
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
+                              onChanged: (value) => stateFilter.filter = value,
                               controller: formWordController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -72,39 +70,7 @@ void ShowFilterModal(
                       ),
                     ),
                   ),
-                  // const SizedBox(height: 16),
-                  // Ícone de filtro com texto "Filtre por Categoria"
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Container(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 12),
-                  //     decoration: BoxDecoration(
-                  //       border: Border.all(color: Colors.black),
-                  //       borderRadius: BorderRadius.circular(10),
-                  //     ),
-                  //     child: Row(
-                  //       children: [
-                  //         const Icon(Icons.filter_list),
-                  //         const SizedBox(width: 8),
-                  //         Expanded(
-                  //           child: TextField(
-                  //             controller: filterController,
-                  //             decoration: const InputDecoration(
-                  //               border: InputBorder.none,
-                  //               hintText: 'Filtre por Categoria',
-                  //               hintStyle: TextStyle(
-                  //                 color: Colors.grey,
-                  //                 fontWeight: FontWeight.bold,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(height: 16),
-                  // Botão "Buscar"
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: SizedBox(

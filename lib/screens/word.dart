@@ -64,6 +64,9 @@ class _WordScreenState extends State<WordScreen> {
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -118,7 +121,7 @@ class _WordScreenState extends State<WordScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 20),
@@ -131,19 +134,23 @@ class _WordScreenState extends State<WordScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
-                CarouselSlider(
-                  options: CarouselOptions(
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    autoPlay: true,
-                  ),
-                  items: [1, 2].map((i) {
-                    return Container(
-                        child: imageContainer(context, svgAssetNoThumb));
-                  }).toList(),
-                ),
+                Align(
+                  key: const Key('noContent'),
+                  child: svgAssetNoThumb,
+                )
+                // CarouselSlider(
+                //   options: CarouselOptions(
+                //     enlargeCenterPage: true,
+                //     scrollDirection: Axis.horizontal,
+                //     autoPlay: true,
+                //   ),
+                //   items: [1, 2].map((i) {
+                //     return Container(
+                //         child: imageContainer(context, svgAssetNoThumb));
+                //   }).toList(),
+                // ),
               ],
             ),
           ),

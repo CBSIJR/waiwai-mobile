@@ -19,7 +19,7 @@ Widget buttonsHomeScreen(
                       backgroundColor: colorBack,
                       key: const Key('filterButton'),
                       onPressed: () {
-                        ShowFilterModal(context);
+                        showFilterModal(context);
                       },
                       child: const Icon(
                         Icons.filter_list,
@@ -47,7 +47,7 @@ Widget buttonsHomeScreen(
         : FloatingActionButton(
             backgroundColor: colorBack,
             onPressed: () {
-              ShowFilterModal(context);
+              showFilterModal(context);
             },
             child: const Icon(
               Icons.filter_list,

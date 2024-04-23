@@ -15,12 +15,13 @@ class WordState extends ChangeNotifier {
   late int _pageTotal = 0;
   final int _pageTotalFiltered = 0;
 
-  String _filter = '';
+//   String _filter = '';
   final String _filterOlder = '';
   int _pageFiltered = 1;
   final WordList _listFiltered = [];
 
-  set filter(String value) => _filter = value;
+  String filter = '';
+//   set filter(String value) => _filter = value;
 
   bool get isLoading => _isLoading;
   WordList get listFiltered => _listFiltered;
@@ -51,7 +52,6 @@ class WordState extends ChangeNotifier {
   }
 
   Future<void> getByPage() async {
-    print(_filter);
     if (_isLoading || _page > _pageTotal) return;
     _isLoading = true;
     _list.addAll(await _repository.getByPage(page: _page, size: _pageSize));
