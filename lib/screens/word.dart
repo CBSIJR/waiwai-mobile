@@ -40,7 +40,7 @@ class _WordScreenState extends State<WordScreen> {
                           widget.word.$1.word,
                           textAlign: TextAlign.start,
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 26,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -74,7 +74,7 @@ class _WordScreenState extends State<WordScreen> {
                                 final meaning = widget.word.$2[index];
                                 return Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 8, right: 8, bottom: 4),
+                                      left: 8, right: 8, bottom: 8),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -112,6 +112,9 @@ class _WordScreenState extends State<WordScreen> {
                             Align(
                               key: const Key('noContent'),
                               child: svgAssetNoThumb,
+                            ),
+                            const SizedBox(
+                              height: 10,
                             )
                           ],
                         ),
