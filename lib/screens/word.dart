@@ -21,8 +21,7 @@ class _WordScreenState extends State<WordScreen> {
       body: ListView(
         children: [
           Container(
-            margin:
-                const EdgeInsets.only(top: 0, left: 20, right: 20, bottom: 20),
+            margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -31,12 +30,12 @@ class _WordScreenState extends State<WordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 8, right: 8, bottom: 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 15),
                         child: Text(
                           widget.word.$1.word,
                           textAlign: TextAlign.start,
@@ -55,7 +54,7 @@ class _WordScreenState extends State<WordScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Padding(
-                              padding: EdgeInsets.only(left: 20),
+                              padding: EdgeInsets.only(left: 15),
                               child: Text(
                                 "Significado(s)",
                                 style: TextStyle(
@@ -74,7 +73,8 @@ class _WordScreenState extends State<WordScreen> {
                               itemBuilder: (context, index) {
                                 final meaning = widget.word.$2[index];
                                 return Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8, bottom: 4),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -93,53 +93,33 @@ class _WordScreenState extends State<WordScreen> {
                                 );
                               },
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
+                            const SizedBox(
+                              height: 10,
                             ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Text(
+                                "Anexo(s)",
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              key: const Key('noContent'),
+                              child: svgAssetNoThumb,
+                            )
                           ],
-                        ),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text(
-                    "Anexo(s)",
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  key: const Key('noContent'),
-                  child: svgAssetNoThumb,
-                )
+
                 // CarouselSlider(
                 //   options: CarouselOptions(
                 //     enlargeCenterPage: true,

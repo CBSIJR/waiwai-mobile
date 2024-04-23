@@ -45,6 +45,7 @@ Widget buttonsHomeScreen(
             ],
           )
         : FloatingActionButton(
+            key: const Key('filterButton'),
             backgroundColor: colorBack,
             onPressed: () {
               showFilterModal(context);

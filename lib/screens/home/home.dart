@@ -92,7 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) {
             final word = state.words[index];
             return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0),
               child: WordComponent(
                 word: word,
                 onTap: () {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dicionario_waiwai/components/aboutcard.dart';
 
-
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
 
@@ -21,7 +20,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return MainScreenLayout(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(28),
+          padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
