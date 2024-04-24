@@ -144,6 +144,7 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
       wordWithLimitQuery,
       's',
     );
+
     JoinedSelectStatement query = _database.select(wordWithLimitSubquery).join([
       innerJoin(
           _database.meanings,

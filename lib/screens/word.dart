@@ -1,10 +1,8 @@
 import 'package:dicionario_waiwai/components/icons.dart';
-import 'package:dicionario_waiwai/components/image.dart';
 import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:dicionario_waiwai/components/myExpansionTile.dart';
 import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class WordScreen extends StatefulWidget {
   final WordWithMeaning word;
