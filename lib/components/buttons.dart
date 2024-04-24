@@ -16,20 +16,21 @@ Widget buttonsHomeScreen(
                     opacity: showButton ? 1.0 : 0,
                     duration: const Duration(milliseconds: 500),
                     child: FloatingActionButton(
-                      backgroundColor: colorBack,
                       key: const Key('filterButton'),
+                      backgroundColor: colorBack,
                       onPressed: () {
                         showFilterModal(context);
                       },
                       child: const Icon(
                         Icons.filter_list,
+                        key: Key('filterIcon'),
                         color: Colors.white,
                       ),
                     )),
               ),
               FloatingActionButton(
-                backgroundColor: colorBack,
                 key: const Key('scrollToTopButton'),
+                backgroundColor: colorBack,
                 onPressed: () {
                   scrollController.animateTo(
                     0,
@@ -39,6 +40,7 @@ Widget buttonsHomeScreen(
                 },
                 child: const Icon(
                   Icons.arrow_upward,
+                  key: Key('scrollToTopIcon'),
                   color: Colors.white,
                 ),
               ),
@@ -52,6 +54,7 @@ Widget buttonsHomeScreen(
             },
             child: const Icon(
               Icons.filter_list,
+              key: Key('filterIcon'),
               color: Colors.white,
             ),
           );

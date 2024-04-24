@@ -11,12 +11,11 @@ class WordState extends ChangeNotifier {
   final WordList _list = [];
 
   late int _total = 0;
-  final int _totalFiltered = 0;
+  late int _totalFiltered = 0;
   late int _pageTotal = 0;
-  final int _pageTotalFiltered = 0;
+  late int _pageTotalFiltered = 0;
 
-//   String _filter = '';
-  final String _filterOlder = '';
+  String _filterOlder = '';
   int _pageFiltered = 1;
   final WordList _listFiltered = [];
 
@@ -29,9 +28,9 @@ class WordState extends ChangeNotifier {
   int get page => _page;
   int get pageSize => _pageSize;
   List get words {
-    return _list;
-    // if (_filter.isEmpty) return _list;
-    // return _listFiltered;
+    // return _list;
+    if (_listFiltered.isEmpty) return _list;
+    return _listFiltered;
   }
 
   List get pageFiltered => _listFiltered;
@@ -60,15 +59,22 @@ class WordState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getByFilter(String criteria) async {
-    if (criteria.isEmpty) {
-      _pageFiltered = 1;
-
-      return;
-    }
+  Future<void> getByFilter() async {
+    if (_isLoading || _pageFiltered > _pageTotalFiltered) return;
     _isLoading = true;
+    if (filter != _filterOlder) {
+      _filterOlder = filter;
+      _listFiltered.clear();
+      _pageFiltered = 1;
+      _totalFiltered = 0;
+      _pageTotalFiltered = 0;
+      _totalFiltered = await _repository.count(criteria: filter);
+      _pageTotalFiltered = (_totalFiltered / _pageSize).ceil();
+    }
+
     _listFiltered.addAll(await _repository.getByPage(
-        criteria: criteria, page: _page, size: _pageSize));
+        criteria: filter, page: _pageFiltered, size: _pageSize));
+    _pageFiltered++;
     _isLoading = false;
     notifyListeners();
   }

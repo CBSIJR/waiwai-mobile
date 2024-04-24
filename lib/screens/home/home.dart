@@ -45,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, value, child) {
             if (value.isLoading && value.total == 0) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  key: Key('loadingProcess'),
+                ),
               );
             }
             if (!value.isLoading && value.total == 0) {

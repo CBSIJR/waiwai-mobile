@@ -10,7 +10,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: svgAssetAppName,
       backgroundColor: const Color(0xFFF2F2F2),
-      //actions: actions,
+      surfaceTintColor: Colors.transparent,
     );
   }
 

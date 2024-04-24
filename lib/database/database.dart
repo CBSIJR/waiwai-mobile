@@ -213,10 +213,16 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
     throw UnimplementedError();
   }
 
-  Future<int> count() async {
+  Future<int> count({String criteria = ''}) async {
     final amountOfWords = _database.words.id.count();
-    final query = _database.select(_database.words);
-
+    SimpleSelectStatement<$WordsTable, Word> query =
+        _database.select(_database.words);
+    if (criteria.isNotEmpty) {
+      query = query
+        ..where((tbl) =>
+            tbl.word.like('%$criteria%') |
+            _database.meanings.meaning.like('%$criteria%'));
+    }
     final result = await query.addColumns([amountOfWords]).getSingle();
     final wordCount = result.read(amountOfWords);
     return wordCount ?? 0;
