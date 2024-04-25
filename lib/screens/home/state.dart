@@ -60,7 +60,16 @@ class WordState extends ChangeNotifier {
   }
 
   Future<void> getByFilter() async {
-    if (_isLoading || _pageFiltered > _pageTotalFiltered) return;
+    if (filter.isEmpty) {
+      _listFiltered.clear();
+      _pageFiltered = 1;
+      _totalFiltered = 0;
+      _pageTotalFiltered = 0;
+      notifyListeners();
+      return;
+    }
+
+    if (_pageFiltered > _pageTotalFiltered && filter.isNotEmpty) return;
     _isLoading = true;
     if (filter != _filterOlder) {
       _filterOlder = filter;

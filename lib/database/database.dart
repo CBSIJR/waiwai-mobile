@@ -214,16 +214,32 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
   }
 
   Future<int> count({String criteria = ''}) async {
-    final amountOfWords = _database.words.id.count();
-    SimpleSelectStatement<$WordsTable, Word> query =
-        _database.select(_database.words);
+    final wordSubquery = Subquery(
+      _database.select(_database.words),
+      's',
+    );
+
+    final amountOfWords =
+        wordSubquery.ref(_database.words.id).count(distinct: true);
+
+    JoinedSelectStatement query = _database.select(wordSubquery).join([
+      innerJoin(
+          _database.meanings,
+          wordSubquery
+              .ref(_database.words.id)
+              .equalsExp(_database.meanings.wordId),
+          useColumns: false)
+    ])
+      ..addColumns([amountOfWords]);
+    // ..groupBy([wordSubquery.ref(_database.words.id)]);
+
     if (criteria.isNotEmpty) {
       query = query
-        ..where((tbl) =>
-            tbl.word.like('%$criteria%') |
+        ..where(wordSubquery.ref(_database.words.word).like('%$criteria%') |
             _database.meanings.meaning.like('%$criteria%'));
     }
-    final result = await query.addColumns([amountOfWords]).getSingle();
+
+    final result = await query.getSingle();
     final wordCount = result.read(amountOfWords);
     return wordCount ?? 0;
   }

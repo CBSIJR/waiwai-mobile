@@ -54,7 +54,6 @@ void showFilterModal(
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
-                              onChanged: (value) => stateFilter.filter = value,
                               controller: formWordController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -87,10 +86,9 @@ void showFilterModal(
                                 backgroundColor: Colors.white,
                                 textColor: Colors.black,
                                 fontSize: 16.0);
-                            return;
                           }
-                          Provider.of<WordState>(context, listen: false)
-                              .filter = formword;
+                          stateFilter.filter = formword;
+                          stateFilter.getByFilter();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
