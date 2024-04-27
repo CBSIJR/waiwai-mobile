@@ -23,7 +23,6 @@ class WordState extends ChangeNotifier {
 //   set filter(String value) => _filter = value;
 
   bool get isLoading => _isLoading;
-  WordList get listFiltered => _listFiltered;
   int get total => _total;
   int get page => _page;
   int get pageSize => _pageSize;
@@ -60,30 +59,21 @@ class WordState extends ChangeNotifier {
   }
 
   Future<void> getByFilter() async {
-    if (filter.isEmpty) {
-      _listFiltered.clear();
-      _pageFiltered = 1;
-      _totalFiltered = 0;
-      _pageTotalFiltered = 0;
-      notifyListeners();
-      return;
-    }
-
-    if (_pageFiltered > _pageTotalFiltered && filter.isNotEmpty) return;
     _isLoading = true;
-    if (filter != _filterOlder) {
+    if (filter.isEmpty | (filter != _filterOlder)) {
       _filterOlder = filter;
       _listFiltered.clear();
       _pageFiltered = 1;
       _totalFiltered = 0;
       _pageTotalFiltered = 0;
+    }
+    if (filter.isNotEmpty & (filter == _filterOlder)) {
       _totalFiltered = await _repository.count(criteria: filter);
       _pageTotalFiltered = (_totalFiltered / _pageSize).ceil();
+      _listFiltered.addAll(await _repository.getByPage(
+          criteria: filter, page: _pageFiltered, size: _pageSize));
+      _pageFiltered++;
     }
-
-    _listFiltered.addAll(await _repository.getByPage(
-        criteria: filter, page: _pageFiltered, size: _pageSize));
-    _pageFiltered++;
     _isLoading = false;
     notifyListeners();
   }

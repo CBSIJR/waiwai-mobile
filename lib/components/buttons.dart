@@ -16,6 +16,7 @@ Widget buttonsHomeScreen(
                     opacity: showButton ? 1.0 : 0,
                     duration: const Duration(milliseconds: 500),
                     child: FloatingActionButton(
+                      heroTag: "filterButton",
                       key: const Key('filterButton'),
                       backgroundColor: colorBack,
                       onPressed: () {
@@ -29,6 +30,7 @@ Widget buttonsHomeScreen(
                     )),
               ),
               FloatingActionButton(
+                heroTag: "scrollToTopButton",
                 key: const Key('scrollToTopButton'),
                 backgroundColor: colorBack,
                 onPressed: () {
@@ -47,6 +49,7 @@ Widget buttonsHomeScreen(
             ],
           )
         : FloatingActionButton(
+            heroTag: "filterButton",
             key: const Key('filterButton'),
             backgroundColor: colorBack,
             onPressed: () {

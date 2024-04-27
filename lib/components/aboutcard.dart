@@ -17,10 +17,13 @@ class TeamMember {
 class TeamPage extends StatelessWidget {
   final List<TeamMember> teamMembers = [
     TeamMember(
-        name: 'Augusto Junior',
-        role: 'Desenvolvedor Backend',
-        avatar: 'assets/collaborators/augusto.png'),
-    TeamMember(name: 'Débora Marcião', role: 'Designer', avatar: ''),
+        name: 'Augusto Junior', role: 'Desenvolvedor Backend', avatar: ''),
+    //avatar: 'assets/collaborators/augusto.png'),
+    TeamMember(
+      name: 'Débora Marcião',
+      role: 'Designer',
+      avatar: '',
+    ),
     TeamMember(
         name: 'Marcos Printes',
         role: 'Desenvolvedor Mobile',
