@@ -10,6 +10,11 @@ class WordState extends ChangeNotifier {
   int _page = 1;
   final WordList _list = [];
 
+  final CategoryList _listCategories = [];
+  Category categorySelected =
+      const Category(id: 0, category: 'Sem categoria', description: '');
+  late int _totalCategories = 0;
+
   late int _total = 0;
   late int _totalFiltered = 0;
   late int _pageTotal = 0;
@@ -33,6 +38,7 @@ class WordState extends ChangeNotifier {
   }
 
   List get pageFiltered => _listFiltered;
+  List<Category> get categories => _listCategories;
 
   WordState(this.providerDb) {
     _repository = WordRepository(providerDb);
@@ -49,6 +55,16 @@ class WordState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> fetchCategories() async {
+    if (_totalCategories != 0) return;
+    _isLoading = true;
+    _listCategories.addAll(await _repository.getAllCategories());
+    if (_listCategories.isNotEmpty) categorySelected = _listCategories.first;
+    _totalCategories = _listCategories.length;
+    _isLoading = false;
+    notifyListeners();
+  }
+
   Future<void> getByPage() async {
     if (_isLoading || _page > _pageTotal) return;
     _isLoading = true;
@@ -60,18 +76,25 @@ class WordState extends ChangeNotifier {
 
   Future<void> getByFilter() async {
     _isLoading = true;
-    if (filter.isEmpty | (filter != _filterOlder)) {
+    if ((filter.isEmpty & [0, 1].contains(categorySelected.id)) |
+        (filter != _filterOlder)) {
       _filterOlder = filter;
       _listFiltered.clear();
       _pageFiltered = 1;
       _totalFiltered = 0;
       _pageTotalFiltered = 0;
     }
-    if (filter.isNotEmpty & (filter == _filterOlder)) {
+
+    if ((filter.isNotEmpty |
+            (!([0, 1].contains(categorySelected.id)) & filter.isEmpty)) &
+        (filter == _filterOlder)) {
       _totalFiltered = await _repository.count(criteria: filter);
       _pageTotalFiltered = (_totalFiltered / _pageSize).ceil();
       _listFiltered.addAll(await _repository.getByPage(
-          criteria: filter, page: _pageFiltered, size: _pageSize));
+          criteria: (filter, categorySelected.id),
+          page: _pageFiltered,
+          size: _pageSize));
+      print(categorySelected.id);
       _pageFiltered++;
     }
     _isLoading = false;

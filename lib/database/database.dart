@@ -2,6 +2,7 @@
 
 import 'package:drift/drift.dart';
 import 'connection/connection.dart' as impl;
+import 'dart:developer';
 
 // dart run drift_dev schema steps .\lib\database\database.dart .\lib\database\schema_versions.dart
 // import 'schema_versions.dart';
@@ -24,7 +25,15 @@ mixin BaseTable on Table {
 @DataClassName('Reference')
 class References extends Table with BaseTable {
   TextColumn get reference => text()();
+  IntColumn get year => integer()();
+  TextColumn get authors => text()();
   TextColumn get url => text().nullable()();
+}
+
+@DataClassName('Category')
+class Categories extends Table with BaseTable {
+  TextColumn get category => text()();
+  TextColumn get description => text()();
 }
 
 @DataClassName('User')
@@ -37,27 +46,55 @@ class Words extends Table with BaseTable {
   TextColumn get word => text()();
   TextColumn get phonemic => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
-  DateTimeColumn get updateAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+
   IntColumn get userId => integer().references(Users, #id)();
 }
 
 @DataClassName('Meaning')
 class Meanings extends Table with BaseTable {
-  TextColumn get meaning => text()();
-  TextColumn get comment => text().nullable()();
-  IntColumn get chapterId => integer().nullable()();
-  IntColumn get entryId => integer().nullable()();
+  TextColumn get meaningPt => text()();
+  TextColumn get meaningWw => text().nullable()();
+  TextColumn get commentPt => text().nullable()();
+  TextColumn get commentWw => text().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+
   IntColumn get wordId => integer().references(Words, #id)();
   IntColumn get referenceId => integer().references(References, #id)();
   IntColumn get userId => integer().references(Users, #id)();
 }
 
+@DataClassName('Attachment')
+class Attachments extends Table with BaseTable {
+  TextColumn get uuid => text()();
+  TextColumn get fileName => text()();
+  TextColumn get fileDir => text()();
+  TextColumn get url => text()();
+  TextColumn get contentType => text()();
+
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  IntColumn get wordId => integer().references(Words, #id)();
+  IntColumn get userId => integer().references(Users, #id)();
+}
+
+@DataClassName('WordCategory')
+class WordCategories extends Table {
+  IntColumn get wordId => integer().references(Words, #id)();
+  IntColumn get categoryId => integer().references(Categories, #id)();
+}
+
 @DriftDatabase(
   tables: [
-    Users,
     References,
+    Categories,
+    Users,
     Words,
     Meanings,
+    Attachments,
+    WordCategories
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -66,13 +103,41 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(DatabaseConnection super.connection);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
     return MigrationStrategy(
       onCreate: (Migrator m) async {
         await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          await m.deleteTable('Meanings');
+          await m.deleteTable('Attachments');
+          await m.deleteTable('WordCategories');
+          await m.deleteTable('Words');
+          await m.deleteTable('References');
+          await m.deleteTable('Categories');
+          await m.deleteTable('Users');
+          await m.createAll();
+
+          // we added the dueDate property in the change from version 1 to
+          // version 2
+          // await m.addColumn(todos, todos.dueDate);
+        }
+        if (from < 3) {
+          // we added the priority property in the change from version 1 or 2
+          // to version 3
+          await m.deleteTable('Meanings');
+          await m.deleteTable('Attachments');
+          await m.deleteTable('WordCategories');
+          await m.deleteTable('Words');
+          await m.deleteTable('References');
+          await m.deleteTable('Categories');
+          await m.deleteTable('Users');
+          await m.createAll();
+        }
       },
       beforeOpen: (details) async {
         if (details.wasCreated) {}
@@ -86,15 +151,25 @@ class AppDatabase extends _$AppDatabase {
       List<UsersCompanion> userlist,
       List<ReferencesCompanion> referencelist,
       List<WordsCompanion> wordlist,
-      List<MeaningsCompanion> meaninglist) async {
+      List<MeaningsCompanion> meaninglist,
+      List<CategoriesCompanion> categorylist,
+      List<WordCategoriesCompanion> wordcategorylist,
+      List<AttachmentsCompanion> attachmentlist) async {
     await batch((batch) {
       batch.deleteAll(meanings);
+      batch.deleteAll(attachments);
+      batch.deleteAll(wordCategories);
       batch.deleteAll(words);
       batch.deleteAll(references);
+      batch.deleteAll(categories);
       batch.deleteAll(users);
+
       batch.insertAll(users, userlist);
+      batch.insertAll(categories, categorylist);
       batch.insertAll(references, referencelist);
       batch.insertAll(words, wordlist);
+      batch.insertAll(wordCategories, wordcategorylist);
+      batch.insertAll(attachments, attachmentlist);
       batch.insertAll(meanings, meaninglist);
     });
   }
@@ -115,6 +190,8 @@ typedef WordWithMeaning = (Word word, List<MeaningWithReference> meanings);
 
 typedef WordList = List<WordWithMeaning>;
 
+typedef Criteria = (String search, int category);
+
 class WordRepository extends Repository<Words, WordsCompanion, WordList> {
   final AppDatabase _database;
   WordRepository(this._database);
@@ -133,49 +210,73 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
 
   @override
   Future<WordList> getByPage(
-      {String criteria = '', int page = 1, int size = 50}) async {
+      {Criteria criteria = ('', 1), int page = 1, int size = 50}) async {
     int offset = (page - 1) * size;
     int limit = size;
 
-    final wordWithLimitQuery = _database.select(_database.words)
-      ..limit(limit, offset: offset);
+    String search = criteria.$1;
+    int category = criteria.$2;
+
+    final idsOfWords = _database.words.id;
+
+    JoinedSelectStatement wordWithLimitQuery =
+        _database.selectOnly(_database.words).join([
+      innerJoin(_database.meanings,
+          _database.meanings.wordId.equalsExp(_database.words.id),
+          useColumns: false),
+      innerJoin(_database.wordCategories,
+          _database.wordCategories.wordId.equalsExp(_database.words.id),
+          useColumns: false),
+      innerJoin(
+          _database.categories,
+          _database.wordCategories.categoryId
+              .equalsExp(_database.categories.id),
+          useColumns: false),
+    ])
+          ..orderBy([
+            OrderingTerm.asc(_database.words.word),
+            OrderingTerm.desc(_database.words.word.length)
+          ])
+          ..groupBy([_database.words.id])
+          ..limit(limit, offset: offset);
+    if (category > 1) {
+      wordWithLimitQuery.where(_database.categories.id.equals(category));
+    }
+    if (search.isNotEmpty) {
+      wordWithLimitQuery.where(_database.words.word.upper().like('%$search%') |
+          _database.meanings.meaningPt.upper().like('%$search%'));
+    }
+
+    wordWithLimitQuery.addColumns([idsOfWords]);
 
     final wordWithLimitSubquery = Subquery(
       wordWithLimitQuery,
       's',
     );
 
-    JoinedSelectStatement query = _database.select(wordWithLimitSubquery).join([
+    final query = _database.select(wordWithLimitSubquery).join([
       innerJoin(
           _database.meanings,
           wordWithLimitSubquery
               .ref(_database.words.id)
               .equalsExp(_database.meanings.wordId)),
+      innerJoin(
+          _database.words,
+          wordWithLimitSubquery
+              .ref(_database.words.id)
+              .equalsExp(_database.words.id)),
       innerJoin(_database.references,
           _database.meanings.referenceId.equalsExp(_database.references.id))
-    ])
-      ..orderBy([
-        OrderingTerm.asc(wordWithLimitSubquery.ref(_database.words.word)),
-        OrderingTerm.desc(
-            wordWithLimitSubquery.ref(_database.words.word).length)
-      ]);
-
-    if (criteria.isNotEmpty) {
-      query = query
-        ..where(wordWithLimitSubquery
-                .ref(_database.words.word)
-                .like('%$criteria%') |
-            _database.meanings.meaning.like('%$criteria%'));
-    }
+    ]);
 
     final result = await query.get().then((rows) {
       WordList wordList = [];
       for (var row in rows) {
-        final condition = wordList.where((element) =>
-            element.$1.id == row.readTable(wordWithLimitSubquery).id);
+        final condition = wordList.where(
+            (element) => element.$1.id == row.readTable(_database.words).id);
         if (condition.isEmpty) {
           wordList.add((
-            row.readTable(wordWithLimitSubquery),
+            row.readTable(_database.words),
             [
               (
                 row.readTable(_database.meanings),
@@ -213,6 +314,13 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
     throw UnimplementedError();
   }
 
+  Future<CategoryList> getAllCategories() async {
+    final query = _database.select(_database.categories)
+      ..orderBy([(categories) => OrderingTerm.asc(categories.id)]);
+    final result = await query.get();
+    return result;
+  }
+
   Future<int> count({String criteria = ''}) async {
     final wordSubquery = Subquery(
       _database.select(_database.words),
@@ -236,7 +344,7 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
     if (criteria.isNotEmpty) {
       query = query
         ..where(wordSubquery.ref(_database.words.word).like('%$criteria%') |
-            _database.meanings.meaning.like('%$criteria%'));
+            _database.meanings.meaningPt.like('%$criteria%'));
     }
 
     final result = await query.getSingle();
@@ -306,6 +414,9 @@ class WordRepository extends Repository<Words, WordsCompanion, WordList> {
 //     });
 //   }
 }
+
+typedef CategoryList = List<Category>;
+
 
 // class UserRepository extends Repository<User, UserCompanion> {
 //   final AppDatabase _database;

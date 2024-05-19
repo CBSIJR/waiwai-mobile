@@ -51,7 +51,6 @@ class WaiWaiApiProvider with ChangeNotifier {
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
         final fullName = item['full_name'] as String;
-
         return UsersCompanion.insert(id: Value(id), fullName: fullName);
       }).toList();
       result = MessageApi(detail: 'Successful', status: true, data: users);
@@ -77,10 +76,17 @@ class WaiWaiApiProvider with ChangeNotifier {
       List<ReferencesCompanion> references =
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
+        final year = item['year'] as int;
         final reference = item['reference'] as String;
+        final authors = item['authors'] as String;
         final url = item['url'] as String?;
+
         return ReferencesCompanion.insert(
-            id: Value(id), reference: reference, url: Value(url));
+            id: Value(id),
+            reference: reference,
+            url: Value(url),
+            year: year,
+            authors: authors);
       }).toList();
       result = MessageApi(detail: 'Successful', status: true, data: references);
     } else {
@@ -108,7 +114,7 @@ class WaiWaiApiProvider with ChangeNotifier {
         final word = item['word'] as String;
         final phonemic = item['phonemic'] as String?;
         final createdAt = DateTime.parse(item['created_at'] as String);
-        final updateAt = DateTime.parse(item['update_at'] as String);
+        final updatedAt = DateTime.parse(item['updated_at'] as String);
         final userId = item['user_id'] as int;
 
         return WordsCompanion.insert(
@@ -116,7 +122,7 @@ class WaiWaiApiProvider with ChangeNotifier {
             word: word,
             phonemic: Value(phonemic),
             createdAt: createdAt,
-            updateAt: updateAt,
+            updatedAt: updatedAt,
             userId: userId);
       }).toList();
       result = MessageApi(detail: 'Successful', status: true, data: words);
@@ -142,20 +148,23 @@ class WaiWaiApiProvider with ChangeNotifier {
       List<MeaningsCompanion> words =
           jsonResponse.whereType<Map<String, Object?>>().map((item) {
         final id = item['id'] as int;
-        final meaning = item['meaning'] as String;
-        final comment = item['comment'] as String?;
-        final chapterId = item['chapter_id'] as int?;
-        final entryId = item['entry_id'] as int?;
+        final meaningPt = item['meaning_pt'] as String;
+        final meaningWw = item['meaning_wwt'] as String?;
+        final commentPt = item['comment_pt'] as String?;
+        final commentWw = item['comment_ww'] as String?;
+        final createdAt = DateTime.parse(item['created_at'] as String);
+        final updatedAt = DateTime.parse(item['updated_at'] as String);
         final wordId = item['word_id'] as int;
         final referenceId = item['reference_id'] as int;
         final userId = item['user_id'] as int;
-
         return MeaningsCompanion.insert(
             id: Value(id),
-            meaning: meaning,
-            comment: Value(comment),
-            chapterId: Value(chapterId),
-            entryId: Value(entryId),
+            meaningPt: meaningPt,
+            meaningWw: Value(meaningWw),
+            commentPt: Value(commentPt),
+            commentWw: Value(commentWw),
+            createdAt: createdAt,
+            updatedAt: updatedAt,
             wordId: wordId,
             referenceId: referenceId,
             userId: userId);
@@ -163,6 +172,108 @@ class WaiWaiApiProvider with ChangeNotifier {
       result = MessageApi(detail: 'Successful', status: true, data: words);
     } else {
       throw MessageApiException(detail: 'Significados');
+    }
+    return result;
+  }
+
+  Future<MessageApi> getExportCategories() async {
+    late MessageApi result;
+
+    Response response = await get(
+      Uri.parse(AppUrl.categoriasExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<CategoriesCompanion> words =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final id = item['id'] as int;
+
+        final category = item['category'] as String;
+        final description = item['description'] as String;
+
+        return CategoriesCompanion.insert(
+            id: Value(id), category: category, description: description);
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: words);
+    } else {
+      throw MessageApiException(detail: 'Categorias');
+    }
+    return result;
+  }
+
+  Future<MessageApi> getExportAttachments() async {
+    late MessageApi result;
+
+    Response response = await get(
+      Uri.parse(AppUrl.anexosExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<AttachmentsCompanion> words =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final id = item['id'] as int;
+        final uuid = item['uuid'] as String;
+        final fileName = item['filename'] as String;
+        final fileDir = item['filedir'] as String;
+        final url = item['url'] as String;
+        final contentType = item['content_type'] as String;
+        final createdAt = DateTime.parse(item['created_at'] as String);
+        final updatedAt = DateTime.parse(item['updated_at'] as String);
+        final wordId = item['word_id'] as int;
+        final userId = item['user_id'] as int;
+
+        return AttachmentsCompanion.insert(
+            id: Value(id),
+            uuid: uuid,
+            fileName: fileName,
+            fileDir: fileDir,
+            url: url,
+            contentType: contentType,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            wordId: wordId,
+            userId: userId);
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: words);
+    } else {
+      throw MessageApiException(detail: 'Anexos');
+    }
+    return result;
+  }
+
+  Future<MessageApi> getExportWordCategories() async {
+    late MessageApi result;
+
+    Response response = await get(
+      Uri.parse(AppUrl.palavracategoriasExportRoute),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+
+      // Filter out non-map items and cast the rest to Map<String, Object?>
+      List<WordCategoriesCompanion> words =
+          jsonResponse.whereType<Map<String, Object?>>().map((item) {
+        final wordId = item['word_id'] as int;
+        final categoryId = item['category_id'] as int;
+        return WordCategoriesCompanion.insert(
+            wordId: wordId, categoryId: categoryId);
+      }).toList();
+      result = MessageApi(detail: 'Successful', status: true, data: words);
+    } else {
+      throw MessageApiException(detail: 'Palavra e Categorias');
     }
     return result;
   }

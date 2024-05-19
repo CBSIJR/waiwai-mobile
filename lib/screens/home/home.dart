@@ -2,6 +2,7 @@ import 'package:dicionario_waiwai/components/buttons.dart';
 import 'package:dicionario_waiwai/components/icons.dart';
 import 'package:dicionario_waiwai/components/layouts.dart';
 import 'package:dicionario_waiwai/components/word.dart';
+import 'package:dicionario_waiwai/database/database.dart';
 import 'package:dicionario_waiwai/screens/word.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +19,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-
   bool _showButtonToTop = false;
 
   @override
   void initState() {
     super.initState();
+    Provider.of<WordState>(context, listen: false).fetchCategories();
     Provider.of<WordState>(context, listen: false).fetchWords();
+
     _scrollController.addListener(() {
       if (_scrollController.offset >= 200) {
         setState(() {

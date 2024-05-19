@@ -19,7 +19,7 @@ class _WordComponentState extends State<WordComponent> {
   @override
   Widget build(BuildContext context) {
     String wordText = widget.word.$1.word;
-    final meaningList = widget.word.$2.map((e) => e.$1.meaning).toList();
+    final meaningList = widget.word.$2.map((e) => e.$1.meaningPt).toList();
     String meaningText = meaningList.join(', ');
     meaningText = meaningText.length > 15
         ? '${meaningText.substring(0, 15)}...'

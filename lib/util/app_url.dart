@@ -11,6 +11,8 @@ class AppUrl {
   static const String categoriasExportRoute =
       "$liveBaseURL/categories/export/all";
   static const String usuariosExportRoute = "$liveBaseURL/users/export/all";
+  static const String palavracategoriasExportRoute =
+      "$liveBaseURL/wordcategories/export/all";
 
   // static const String login = "$baseURL/session";
   // static const String register = "$baseURL/registration";

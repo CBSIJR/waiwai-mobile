@@ -1,14 +1,16 @@
+import 'dart:ffi';
+
+import 'package:dicionario_waiwai/database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:dicionario_waiwai/screens/home/state.dart';
 
-void showFilterModal(
-  BuildContext context,
-) {
+void showFilterModal(BuildContext context) {
   WordState stateFilter = Provider.of<WordState>(context, listen: false);
   TextEditingController formWordController =
       TextEditingController(text: stateFilter.filter);
+
+  final TextEditingController categoryController = TextEditingController();
 
   showModalBottomSheet(
     isScrollControlled:
@@ -71,22 +73,53 @@ void showFilterModal(
                   ),
                   const SizedBox(height: 16),
                   Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: DropdownMenu<Category>(
+                      leadingIcon: const Icon(Icons.interests_outlined),
+                      inputDecorationTheme: InputDecorationTheme(
+                        constraints: const BoxConstraints(
+                          maxHeight: 50,
+                        ),
+                        outlineBorder: const BorderSide(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                      ),
+                      initialSelection: stateFilter.categorySelected,
+                      controller: categoryController,
+                      requestFocusOnTap: true,
+                      onSelected: (Category? category) {
+                        stateFilter.categorySelected = stateFilter.categories
+                            .firstWhere(
+                                (element) => element.id == category!.id);
+                      },
+                      dropdownMenuEntries: stateFilter.categories
+                          .map<DropdownMenuEntry<Category>>(
+                              (Category category) {
+                        return DropdownMenuEntry<Category>(
+                          value: category,
+                          label: category.category,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
                           final formword = formWordController.text;
-                          if (formword.isEmpty) {
-                            Fluttertoast.showToast(
-                                msg: "Digite alguma palavra!",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black,
-                                fontSize: 16.0);
-                          }
                           stateFilter.filter = formword;
                           stateFilter.getByFilter();
                         },

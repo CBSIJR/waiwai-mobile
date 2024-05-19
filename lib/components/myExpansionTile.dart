@@ -32,7 +32,7 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
           initiallyExpanded: true,
           controlAffinity: ListTileControlAffinity.leading,
           title: Text(
-            widget.meaning.$1.meaning,
+            widget.meaning.$1.meaningPt,
             style: const TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class _MyExpantionTileState extends State<MyExpantionTile> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: widget.meaning.$1.comment ?? '-',
+                                  text: widget.meaning.$1.commentPt ?? '-',
                                 ),
                               ],
                             ),
