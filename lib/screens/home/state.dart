@@ -12,7 +12,7 @@ class WordState extends ChangeNotifier {
 
   final CategoryList _listCategories = [];
   Category categorySelected =
-      const Category(id: 0, category: 'Sem categoria', description: '');
+      const Category(id: 0, category: 'Sem categorias', description: '');
   late int _totalCategories = 0;
 
   late int _total = 0;
@@ -94,7 +94,6 @@ class WordState extends ChangeNotifier {
           criteria: (filter, categorySelected.id),
           page: _pageFiltered,
           size: _pageSize));
-      print(categorySelected.id);
       _pageFiltered++;
     }
     _isLoading = false;

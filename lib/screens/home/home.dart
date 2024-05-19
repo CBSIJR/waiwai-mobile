@@ -84,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
           }
           if (scrollNotification is ScrollEndNotification) {
             if (_scrollController.position.extentAfter == 0) {
-              // if(state.getByPage())
               if (state.filter.isEmpty) {
                 Provider.of<WordState>(context, listen: false).getByPage();
               } else {

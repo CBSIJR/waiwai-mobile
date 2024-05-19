@@ -10,7 +10,8 @@ void showFilterModal(BuildContext context) {
   TextEditingController formWordController =
       TextEditingController(text: stateFilter.filter);
 
-  final TextEditingController categoryController = TextEditingController();
+  final TextEditingController categoryController =
+      TextEditingController(text: stateFilter.categorySelected.category);
 
   showModalBottomSheet(
     isScrollControlled:
@@ -76,13 +77,17 @@ void showFilterModal(BuildContext context) {
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: DropdownMenu<Category>(
                       leadingIcon: const Icon(Icons.interests_outlined),
+                      width: 389,
+                      enabled: (stateFilter.categorySelected.id != 0),
                       inputDecorationTheme: InputDecorationTheme(
-                        constraints: const BoxConstraints(
-                          maxHeight: 50,
-                        ),
+                        constraints: const BoxConstraints(maxHeight: 50),
                         outlineBorder: const BorderSide(color: Colors.black),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.black),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
