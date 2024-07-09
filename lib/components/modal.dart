@@ -77,7 +77,7 @@ void showFilterModal(BuildContext context) {
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: DropdownMenu<Category>(
                       leadingIcon: const Icon(Icons.interests_outlined),
-                      width: 389,
+                      width: constraints.maxWidth - 32,
                       enabled: (stateFilter.categorySelected.id != 0),
                       inputDecorationTheme: InputDecorationTheme(
                         constraints: const BoxConstraints(maxHeight: 50),
