@@ -1,5 +1,5 @@
 class AppUrl {
-  static const String liveBaseURL = "https://waiwaiapi-mock.vercel.app/api";
+  static const String liveBaseURL = "https://api.pawana.com.br";
   // static const String localBaseURL = "http://127.0.0.0/api";  static const String baseURL = liveBaseURL;
 
   static const String palavrasExportRoute = "$liveBaseURL/words/export/all";

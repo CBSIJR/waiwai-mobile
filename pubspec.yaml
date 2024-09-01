@@ -3,7 +3,7 @@ description: "Dicionário das palavras do dicionário Waiwai."
 
 publish_to: "none"
 
-version: 1.0.1+2
+version: 1.0.2+8
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -22,20 +22,20 @@ dependencies:
   sqflite_common: ^2.5.4
   synchronized: ^3.1.0+1
   flutter_svg: ^2.0.10+1
-  internet_connection_checker: ^1.0.0+1
+  internet_connection_checker: ^2.0.0
   drift: ^2.16.0
   sqlite3_flutter_libs: ^0.5.20
   sqlite3: ^2.4.2
   json_annotation: ^4.8.1
   provider: ^6.1.2
-  carousel_slider: ^4.2.1
-  fluttertoast: ^8.2.5
+  carousel_slider: ^5.0.0
+  fluttertoast: ^8.2.8
 
   drift_dev: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
   build_runner: ^2.4.9
   json_serializable: ^6.7.1
   custom_lint: ^0.6.4

@@ -15,3 +15,5 @@ publish_to: "none"
 
 version: 1.0.1+2
 ```
+
+Compress-Archive -Path 'C:\Users\junior\Documents\Projetos\Waiwai\mobile\build\app\intermediates\merged_native_libs\release\out\lib\*' -DestinationPath 'C:\Users\junior\Documents\Projetos\Waiwai\mobile\build\app\outputs\bundle\release\symbols.zip'

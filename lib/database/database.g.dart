@@ -172,6 +172,16 @@ class Reference extends DataClass implements Insertable<Reference> {
         authors: authors ?? this.authors,
         url: url.present ? url.value : this.url,
       );
+  Reference copyWithCompanion(ReferencesCompanion data) {
+    return Reference(
+      id: data.id.present ? data.id.value : this.id,
+      reference: data.reference.present ? data.reference.value : this.reference,
+      year: data.year.present ? data.year.value : this.year,
+      authors: data.authors.present ? data.authors.value : this.authors,
+      url: data.url.present ? data.url.value : this.url,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Reference(')
@@ -408,6 +418,15 @@ class Category extends DataClass implements Insertable<Category> {
         category: category ?? this.category,
         description: description ?? this.description,
       );
+  Category copyWithCompanion(CategoriesCompanion data) {
+    return Category(
+      id: data.id.present ? data.id.value : this.id,
+      category: data.category.present ? data.category.value : this.category,
+      description:
+          data.description.present ? data.description.value : this.description,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Category(')
@@ -590,6 +609,13 @@ class User extends DataClass implements Insertable<User> {
         id: id ?? this.id,
         fullName: fullName ?? this.fullName,
       );
+  User copyWithCompanion(UsersCompanion data) {
+    return User(
+      id: data.id.present ? data.id.value : this.id,
+      fullName: data.fullName.present ? data.fullName.value : this.fullName,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('User(')
@@ -853,6 +879,17 @@ class Word extends DataClass implements Insertable<Word> {
         updatedAt: updatedAt ?? this.updatedAt,
         userId: userId ?? this.userId,
       );
+  Word copyWithCompanion(WordsCompanion data) {
+    return Word(
+      id: data.id.present ? data.id.value : this.id,
+      word: data.word.present ? data.word.value : this.word,
+      phonemic: data.phonemic.present ? data.phonemic.value : this.phonemic,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      userId: data.userId.present ? data.userId.value : this.userId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Word(')
@@ -1286,6 +1323,22 @@ class Meaning extends DataClass implements Insertable<Meaning> {
         referenceId: referenceId ?? this.referenceId,
         userId: userId ?? this.userId,
       );
+  Meaning copyWithCompanion(MeaningsCompanion data) {
+    return Meaning(
+      id: data.id.present ? data.id.value : this.id,
+      meaningPt: data.meaningPt.present ? data.meaningPt.value : this.meaningPt,
+      meaningWw: data.meaningWw.present ? data.meaningWw.value : this.meaningWw,
+      commentPt: data.commentPt.present ? data.commentPt.value : this.commentPt,
+      commentWw: data.commentWw.present ? data.commentWw.value : this.commentWw,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      wordId: data.wordId.present ? data.wordId.value : this.wordId,
+      referenceId:
+          data.referenceId.present ? data.referenceId.value : this.referenceId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Meaning(')
@@ -1763,6 +1816,22 @@ class Attachment extends DataClass implements Insertable<Attachment> {
         wordId: wordId ?? this.wordId,
         userId: userId ?? this.userId,
       );
+  Attachment copyWithCompanion(AttachmentsCompanion data) {
+    return Attachment(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      fileName: data.fileName.present ? data.fileName.value : this.fileName,
+      fileDir: data.fileDir.present ? data.fileDir.value : this.fileDir,
+      url: data.url.present ? data.url.value : this.url,
+      contentType:
+          data.contentType.present ? data.contentType.value : this.contentType,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      wordId: data.wordId.present ? data.wordId.value : this.wordId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Attachment(')
@@ -2058,6 +2127,14 @@ class WordCategory extends DataClass implements Insertable<WordCategory> {
         wordId: wordId ?? this.wordId,
         categoryId: categoryId ?? this.categoryId,
       );
+  WordCategory copyWithCompanion(WordCategoriesCompanion data) {
+    return WordCategory(
+      wordId: data.wordId.present ? data.wordId.value : this.wordId,
+      categoryId:
+          data.categoryId.present ? data.categoryId.value : this.categoryId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('WordCategory(')
@@ -2141,7 +2218,7 @@ class WordCategoriesCompanion extends UpdateCompanion<WordCategory> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
-  _$AppDatabaseManager get managers => _$AppDatabaseManager(this);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $ReferencesTable references = $ReferencesTable(this);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $UsersTable users = $UsersTable(this);
@@ -2164,7 +2241,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       ];
 }
 
-typedef $$ReferencesTableInsertCompanionBuilder = ReferencesCompanion Function({
+typedef $$ReferencesTableCreateCompanionBuilder = ReferencesCompanion Function({
   Value<int> id,
   required String reference,
   required int year,
@@ -2179,66 +2256,24 @@ typedef $$ReferencesTableUpdateCompanionBuilder = ReferencesCompanion Function({
   Value<String?> url,
 });
 
-class $$ReferencesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $ReferencesTable,
-    Reference,
-    $$ReferencesTableFilterComposer,
-    $$ReferencesTableOrderingComposer,
-    $$ReferencesTableProcessedTableManager,
-    $$ReferencesTableInsertCompanionBuilder,
-    $$ReferencesTableUpdateCompanionBuilder> {
-  $$ReferencesTableTableManager(_$AppDatabase db, $ReferencesTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$ReferencesTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$ReferencesTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$ReferencesTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String> reference = const Value.absent(),
-            Value<int> year = const Value.absent(),
-            Value<String> authors = const Value.absent(),
-            Value<String?> url = const Value.absent(),
-          }) =>
-              ReferencesCompanion(
-            id: id,
-            reference: reference,
-            year: year,
-            authors: authors,
-            url: url,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            required String reference,
-            required int year,
-            required String authors,
-            Value<String?> url = const Value.absent(),
-          }) =>
-              ReferencesCompanion.insert(
-            id: id,
-            reference: reference,
-            year: year,
-            authors: authors,
-            url: url,
-          ),
-        ));
-}
+final class $$ReferencesTableReferences
+    extends BaseReferences<_$AppDatabase, $ReferencesTable, Reference> {
+  $$ReferencesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $$ReferencesTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $ReferencesTable,
-    Reference,
-    $$ReferencesTableFilterComposer,
-    $$ReferencesTableOrderingComposer,
-    $$ReferencesTableProcessedTableManager,
-    $$ReferencesTableInsertCompanionBuilder,
-    $$ReferencesTableUpdateCompanionBuilder> {
-  $$ReferencesTableProcessedTableManager(super.$state);
+  static MultiTypedResultKey<$MeaningsTable, List<Meaning>> _meaningsRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.meanings,
+          aliasName:
+              $_aliasNameGenerator(db.references.id, db.meanings.referenceId));
+
+  $$MeaningsTableProcessedTableManager get meaningsRefs {
+    final manager = $$MeaningsTableTableManager($_db, $_db.meanings)
+        .filter((f) => f.referenceId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_meaningsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$ReferencesTableFilterComposer
@@ -2312,7 +2347,97 @@ class $$ReferencesTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$CategoriesTableInsertCompanionBuilder = CategoriesCompanion Function({
+class $$ReferencesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ReferencesTable,
+    Reference,
+    $$ReferencesTableFilterComposer,
+    $$ReferencesTableOrderingComposer,
+    $$ReferencesTableCreateCompanionBuilder,
+    $$ReferencesTableUpdateCompanionBuilder,
+    (Reference, $$ReferencesTableReferences),
+    Reference,
+    PrefetchHooks Function({bool meaningsRefs})> {
+  $$ReferencesTableTableManager(_$AppDatabase db, $ReferencesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$ReferencesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$ReferencesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> reference = const Value.absent(),
+            Value<int> year = const Value.absent(),
+            Value<String> authors = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+          }) =>
+              ReferencesCompanion(
+            id: id,
+            reference: reference,
+            year: year,
+            authors: authors,
+            url: url,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String reference,
+            required int year,
+            required String authors,
+            Value<String?> url = const Value.absent(),
+          }) =>
+              ReferencesCompanion.insert(
+            id: id,
+            reference: reference,
+            year: year,
+            authors: authors,
+            url: url,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$ReferencesTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({meaningsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (meaningsRefs) db.meanings],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (meaningsRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$ReferencesTableReferences._meaningsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ReferencesTableReferences(db, table, p0)
+                                .meaningsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.referenceId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ReferencesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ReferencesTable,
+    Reference,
+    $$ReferencesTableFilterComposer,
+    $$ReferencesTableOrderingComposer,
+    $$ReferencesTableCreateCompanionBuilder,
+    $$ReferencesTableUpdateCompanionBuilder,
+    (Reference, $$ReferencesTableReferences),
+    Reference,
+    PrefetchHooks Function({bool meaningsRefs})>;
+typedef $$CategoriesTableCreateCompanionBuilder = CategoriesCompanion Function({
   Value<int> id,
   required String category,
   required String description,
@@ -2323,58 +2448,24 @@ typedef $$CategoriesTableUpdateCompanionBuilder = CategoriesCompanion Function({
   Value<String> description,
 });
 
-class $$CategoriesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $CategoriesTable,
-    Category,
-    $$CategoriesTableFilterComposer,
-    $$CategoriesTableOrderingComposer,
-    $$CategoriesTableProcessedTableManager,
-    $$CategoriesTableInsertCompanionBuilder,
-    $$CategoriesTableUpdateCompanionBuilder> {
-  $$CategoriesTableTableManager(_$AppDatabase db, $CategoriesTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$CategoriesTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$CategoriesTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$CategoriesTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String> category = const Value.absent(),
-            Value<String> description = const Value.absent(),
-          }) =>
-              CategoriesCompanion(
-            id: id,
-            category: category,
-            description: description,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            required String category,
-            required String description,
-          }) =>
-              CategoriesCompanion.insert(
-            id: id,
-            category: category,
-            description: description,
-          ),
-        ));
-}
+final class $$CategoriesTableReferences
+    extends BaseReferences<_$AppDatabase, $CategoriesTable, Category> {
+  $$CategoriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $$CategoriesTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $CategoriesTable,
-    Category,
-    $$CategoriesTableFilterComposer,
-    $$CategoriesTableOrderingComposer,
-    $$CategoriesTableProcessedTableManager,
-    $$CategoriesTableInsertCompanionBuilder,
-    $$CategoriesTableUpdateCompanionBuilder> {
-  $$CategoriesTableProcessedTableManager(super.$state);
+  static MultiTypedResultKey<$WordCategoriesTable, List<WordCategory>>
+      _wordCategoriesRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.wordCategories,
+              aliasName: $_aliasNameGenerator(
+                  db.categories.id, db.wordCategories.categoryId));
+
+  $$WordCategoriesTableProcessedTableManager get wordCategoriesRefs {
+    final manager = $$WordCategoriesTableTableManager($_db, $_db.wordCategories)
+        .filter((f) => f.categoryId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_wordCategoriesRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$CategoriesTableFilterComposer
@@ -2428,7 +2519,91 @@ class $$CategoriesTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$UsersTableInsertCompanionBuilder = UsersCompanion Function({
+class $$CategoriesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $CategoriesTable,
+    Category,
+    $$CategoriesTableFilterComposer,
+    $$CategoriesTableOrderingComposer,
+    $$CategoriesTableCreateCompanionBuilder,
+    $$CategoriesTableUpdateCompanionBuilder,
+    (Category, $$CategoriesTableReferences),
+    Category,
+    PrefetchHooks Function({bool wordCategoriesRefs})> {
+  $$CategoriesTableTableManager(_$AppDatabase db, $CategoriesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CategoriesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CategoriesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> category = const Value.absent(),
+            Value<String> description = const Value.absent(),
+          }) =>
+              CategoriesCompanion(
+            id: id,
+            category: category,
+            description: description,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String category,
+            required String description,
+          }) =>
+              CategoriesCompanion.insert(
+            id: id,
+            category: category,
+            description: description,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$CategoriesTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({wordCategoriesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (wordCategoriesRefs) db.wordCategories
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (wordCategoriesRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable: $$CategoriesTableReferences
+                            ._wordCategoriesRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$CategoriesTableReferences(db, table, p0)
+                                .wordCategoriesRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.categoryId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$CategoriesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $CategoriesTable,
+    Category,
+    $$CategoriesTableFilterComposer,
+    $$CategoriesTableOrderingComposer,
+    $$CategoriesTableCreateCompanionBuilder,
+    $$CategoriesTableUpdateCompanionBuilder,
+    (Category, $$CategoriesTableReferences),
+    Category,
+    PrefetchHooks Function({bool wordCategoriesRefs})>;
+typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   Value<int> id,
   required String fullName,
 });
@@ -2437,53 +2612,51 @@ typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
   Value<String> fullName,
 });
 
-class $$UsersTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $UsersTable,
-    User,
-    $$UsersTableFilterComposer,
-    $$UsersTableOrderingComposer,
-    $$UsersTableProcessedTableManager,
-    $$UsersTableInsertCompanionBuilder,
-    $$UsersTableUpdateCompanionBuilder> {
-  $$UsersTableTableManager(_$AppDatabase db, $UsersTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$UsersTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$UsersTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $$UsersTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String> fullName = const Value.absent(),
-          }) =>
-              UsersCompanion(
-            id: id,
-            fullName: fullName,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            required String fullName,
-          }) =>
-              UsersCompanion.insert(
-            id: id,
-            fullName: fullName,
-          ),
-        ));
-}
+final class $$UsersTableReferences
+    extends BaseReferences<_$AppDatabase, $UsersTable, User> {
+  $$UsersTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $$UsersTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $UsersTable,
-    User,
-    $$UsersTableFilterComposer,
-    $$UsersTableOrderingComposer,
-    $$UsersTableProcessedTableManager,
-    $$UsersTableInsertCompanionBuilder,
-    $$UsersTableUpdateCompanionBuilder> {
-  $$UsersTableProcessedTableManager(super.$state);
+  static MultiTypedResultKey<$WordsTable, List<Word>> _wordsRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.words,
+          aliasName: $_aliasNameGenerator(db.users.id, db.words.userId));
+
+  $$WordsTableProcessedTableManager get wordsRefs {
+    final manager = $$WordsTableTableManager($_db, $_db.words)
+        .filter((f) => f.userId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_wordsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MeaningsTable, List<Meaning>> _meaningsRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.meanings,
+          aliasName: $_aliasNameGenerator(db.users.id, db.meanings.userId));
+
+  $$MeaningsTableProcessedTableManager get meaningsRefs {
+    final manager = $$MeaningsTableTableManager($_db, $_db.meanings)
+        .filter((f) => f.userId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_meaningsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$AttachmentsTable, List<Attachment>>
+      _attachmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+          db.attachments,
+          aliasName: $_aliasNameGenerator(db.users.id, db.attachments.userId));
+
+  $$AttachmentsTableProcessedTableManager get attachmentsRefs {
+    final manager = $$AttachmentsTableTableManager($_db, $_db.attachments)
+        .filter((f) => f.userId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_attachmentsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$UsersTableFilterComposer
@@ -2553,7 +2726,114 @@ class $$UsersTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$WordsTableInsertCompanionBuilder = WordsCompanion Function({
+class $$UsersTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $UsersTable,
+    User,
+    $$UsersTableFilterComposer,
+    $$UsersTableOrderingComposer,
+    $$UsersTableCreateCompanionBuilder,
+    $$UsersTableUpdateCompanionBuilder,
+    (User, $$UsersTableReferences),
+    User,
+    PrefetchHooks Function(
+        {bool wordsRefs, bool meaningsRefs, bool attachmentsRefs})> {
+  $$UsersTableTableManager(_$AppDatabase db, $UsersTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$UsersTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$UsersTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> fullName = const Value.absent(),
+          }) =>
+              UsersCompanion(
+            id: id,
+            fullName: fullName,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String fullName,
+          }) =>
+              UsersCompanion.insert(
+            id: id,
+            fullName: fullName,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$UsersTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: (
+              {wordsRefs = false,
+              meaningsRefs = false,
+              attachmentsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (wordsRefs) db.words,
+                if (meaningsRefs) db.meanings,
+                if (attachmentsRefs) db.attachments
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (wordsRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$UsersTableReferences._wordsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UsersTableReferences(db, table, p0).wordsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
+                        typedResults: items),
+                  if (meaningsRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$UsersTableReferences._meaningsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UsersTableReferences(db, table, p0).meaningsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
+                        typedResults: items),
+                  if (attachmentsRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$UsersTableReferences._attachmentsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UsersTableReferences(db, table, p0)
+                                .attachmentsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$UsersTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $UsersTable,
+    User,
+    $$UsersTableFilterComposer,
+    $$UsersTableOrderingComposer,
+    $$UsersTableCreateCompanionBuilder,
+    $$UsersTableUpdateCompanionBuilder,
+    (User, $$UsersTableReferences),
+    User,
+    PrefetchHooks Function(
+        {bool wordsRefs, bool meaningsRefs, bool attachmentsRefs})>;
+typedef $$WordsTableCreateCompanionBuilder = WordsCompanion Function({
   Value<int> id,
   required String word,
   Value<String?> phonemic,
@@ -2570,69 +2850,65 @@ typedef $$WordsTableUpdateCompanionBuilder = WordsCompanion Function({
   Value<int> userId,
 });
 
-class $$WordsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $WordsTable,
-    Word,
-    $$WordsTableFilterComposer,
-    $$WordsTableOrderingComposer,
-    $$WordsTableProcessedTableManager,
-    $$WordsTableInsertCompanionBuilder,
-    $$WordsTableUpdateCompanionBuilder> {
-  $$WordsTableTableManager(_$AppDatabase db, $WordsTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$WordsTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$WordsTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $$WordsTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String> word = const Value.absent(),
-            Value<String?> phonemic = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime> updatedAt = const Value.absent(),
-            Value<int> userId = const Value.absent(),
-          }) =>
-              WordsCompanion(
-            id: id,
-            word: word,
-            phonemic: phonemic,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            userId: userId,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            required String word,
-            Value<String?> phonemic = const Value.absent(),
-            required DateTime createdAt,
-            required DateTime updatedAt,
-            required int userId,
-          }) =>
-              WordsCompanion.insert(
-            id: id,
-            word: word,
-            phonemic: phonemic,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            userId: userId,
-          ),
-        ));
-}
+final class $$WordsTableReferences
+    extends BaseReferences<_$AppDatabase, $WordsTable, Word> {
+  $$WordsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $$WordsTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $WordsTable,
-    Word,
-    $$WordsTableFilterComposer,
-    $$WordsTableOrderingComposer,
-    $$WordsTableProcessedTableManager,
-    $$WordsTableInsertCompanionBuilder,
-    $$WordsTableUpdateCompanionBuilder> {
-  $$WordsTableProcessedTableManager(super.$state);
+  static $UsersTable _userIdTable(_$AppDatabase db) =>
+      db.users.createAlias($_aliasNameGenerator(db.words.userId, db.users.id));
+
+  $$UsersTableProcessedTableManager? get userId {
+    if ($_item.userId == null) return null;
+    final manager = $$UsersTableTableManager($_db, $_db.users)
+        .filter((f) => f.id($_item.userId!));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$MeaningsTable, List<Meaning>> _meaningsRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.meanings,
+          aliasName: $_aliasNameGenerator(db.words.id, db.meanings.wordId));
+
+  $$MeaningsTableProcessedTableManager get meaningsRefs {
+    final manager = $$MeaningsTableTableManager($_db, $_db.meanings)
+        .filter((f) => f.wordId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_meaningsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$AttachmentsTable, List<Attachment>>
+      _attachmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+          db.attachments,
+          aliasName: $_aliasNameGenerator(db.words.id, db.attachments.wordId));
+
+  $$AttachmentsTableProcessedTableManager get attachmentsRefs {
+    final manager = $$AttachmentsTableTableManager($_db, $_db.attachments)
+        .filter((f) => f.wordId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_attachmentsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$WordCategoriesTable, List<WordCategory>>
+      _wordCategoriesRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.wordCategories,
+              aliasName:
+                  $_aliasNameGenerator(db.words.id, db.wordCategories.wordId));
+
+  $$WordCategoriesTableProcessedTableManager get wordCategoriesRefs {
+    final manager = $$WordCategoriesTableTableManager($_db, $_db.wordCategories)
+        .filter((f) => f.wordId.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_wordCategoriesRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$WordsTableFilterComposer
@@ -2756,7 +3032,161 @@ class $$WordsTableOrderingComposer
   }
 }
 
-typedef $$MeaningsTableInsertCompanionBuilder = MeaningsCompanion Function({
+class $$WordsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $WordsTable,
+    Word,
+    $$WordsTableFilterComposer,
+    $$WordsTableOrderingComposer,
+    $$WordsTableCreateCompanionBuilder,
+    $$WordsTableUpdateCompanionBuilder,
+    (Word, $$WordsTableReferences),
+    Word,
+    PrefetchHooks Function(
+        {bool userId,
+        bool meaningsRefs,
+        bool attachmentsRefs,
+        bool wordCategoriesRefs})> {
+  $$WordsTableTableManager(_$AppDatabase db, $WordsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$WordsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$WordsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> word = const Value.absent(),
+            Value<String?> phonemic = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<int> userId = const Value.absent(),
+          }) =>
+              WordsCompanion(
+            id: id,
+            word: word,
+            phonemic: phonemic,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            userId: userId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String word,
+            Value<String?> phonemic = const Value.absent(),
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            required int userId,
+          }) =>
+              WordsCompanion.insert(
+            id: id,
+            word: word,
+            phonemic: phonemic,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            userId: userId,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$WordsTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: (
+              {userId = false,
+              meaningsRefs = false,
+              attachmentsRefs = false,
+              wordCategoriesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (meaningsRefs) db.meanings,
+                if (attachmentsRefs) db.attachments,
+                if (wordCategoriesRefs) db.wordCategories
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable: $$WordsTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$WordsTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (meaningsRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$WordsTableReferences._meaningsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$WordsTableReferences(db, table, p0).meaningsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.wordId == item.id),
+                        typedResults: items),
+                  if (attachmentsRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$WordsTableReferences._attachmentsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$WordsTableReferences(db, table, p0)
+                                .attachmentsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.wordId == item.id),
+                        typedResults: items),
+                  if (wordCategoriesRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$WordsTableReferences._wordCategoriesRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$WordsTableReferences(db, table, p0)
+                                .wordCategoriesRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.wordId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$WordsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $WordsTable,
+    Word,
+    $$WordsTableFilterComposer,
+    $$WordsTableOrderingComposer,
+    $$WordsTableCreateCompanionBuilder,
+    $$WordsTableUpdateCompanionBuilder,
+    (Word, $$WordsTableReferences),
+    Word,
+    PrefetchHooks Function(
+        {bool userId,
+        bool meaningsRefs,
+        bool attachmentsRefs,
+        bool wordCategoriesRefs})>;
+typedef $$MeaningsTableCreateCompanionBuilder = MeaningsCompanion Function({
   Value<int> id,
   required String meaningPt,
   Value<String?> meaningWw,
@@ -2781,86 +3211,49 @@ typedef $$MeaningsTableUpdateCompanionBuilder = MeaningsCompanion Function({
   Value<int> userId,
 });
 
-class $$MeaningsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $MeaningsTable,
-    Meaning,
-    $$MeaningsTableFilterComposer,
-    $$MeaningsTableOrderingComposer,
-    $$MeaningsTableProcessedTableManager,
-    $$MeaningsTableInsertCompanionBuilder,
-    $$MeaningsTableUpdateCompanionBuilder> {
-  $$MeaningsTableTableManager(_$AppDatabase db, $MeaningsTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$MeaningsTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$MeaningsTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$MeaningsTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String> meaningPt = const Value.absent(),
-            Value<String?> meaningWw = const Value.absent(),
-            Value<String?> commentPt = const Value.absent(),
-            Value<String?> commentWw = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime> updatedAt = const Value.absent(),
-            Value<int> wordId = const Value.absent(),
-            Value<int> referenceId = const Value.absent(),
-            Value<int> userId = const Value.absent(),
-          }) =>
-              MeaningsCompanion(
-            id: id,
-            meaningPt: meaningPt,
-            meaningWw: meaningWw,
-            commentPt: commentPt,
-            commentWw: commentWw,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            wordId: wordId,
-            referenceId: referenceId,
-            userId: userId,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            required String meaningPt,
-            Value<String?> meaningWw = const Value.absent(),
-            Value<String?> commentPt = const Value.absent(),
-            Value<String?> commentWw = const Value.absent(),
-            required DateTime createdAt,
-            required DateTime updatedAt,
-            required int wordId,
-            required int referenceId,
-            required int userId,
-          }) =>
-              MeaningsCompanion.insert(
-            id: id,
-            meaningPt: meaningPt,
-            meaningWw: meaningWw,
-            commentPt: commentPt,
-            commentWw: commentWw,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            wordId: wordId,
-            referenceId: referenceId,
-            userId: userId,
-          ),
-        ));
-}
+final class $$MeaningsTableReferences
+    extends BaseReferences<_$AppDatabase, $MeaningsTable, Meaning> {
+  $$MeaningsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $$MeaningsTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $MeaningsTable,
-    Meaning,
-    $$MeaningsTableFilterComposer,
-    $$MeaningsTableOrderingComposer,
-    $$MeaningsTableProcessedTableManager,
-    $$MeaningsTableInsertCompanionBuilder,
-    $$MeaningsTableUpdateCompanionBuilder> {
-  $$MeaningsTableProcessedTableManager(super.$state);
+  static $WordsTable _wordIdTable(_$AppDatabase db) => db.words
+      .createAlias($_aliasNameGenerator(db.meanings.wordId, db.words.id));
+
+  $$WordsTableProcessedTableManager? get wordId {
+    if ($_item.wordId == null) return null;
+    final manager = $$WordsTableTableManager($_db, $_db.words)
+        .filter((f) => f.id($_item.wordId!));
+    final item = $_typedResult.readTableOrNull(_wordIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $ReferencesTable _referenceIdTable(_$AppDatabase db) =>
+      db.references.createAlias(
+          $_aliasNameGenerator(db.meanings.referenceId, db.references.id));
+
+  $$ReferencesTableProcessedTableManager? get referenceId {
+    if ($_item.referenceId == null) return null;
+    final manager = $$ReferencesTableTableManager($_db, $_db.references)
+        .filter((f) => f.id($_item.referenceId!));
+    final item = $_typedResult.readTableOrNull(_referenceIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users
+      .createAlias($_aliasNameGenerator(db.meanings.userId, db.users.id));
+
+  $$UsersTableProcessedTableManager? get userId {
+    if ($_item.userId == null) return null;
+    final manager = $$UsersTableTableManager($_db, $_db.users)
+        .filter((f) => f.id($_item.userId!));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$MeaningsTableFilterComposer
@@ -3013,7 +3406,145 @@ class $$MeaningsTableOrderingComposer
   }
 }
 
-typedef $$AttachmentsTableInsertCompanionBuilder = AttachmentsCompanion
+class $$MeaningsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $MeaningsTable,
+    Meaning,
+    $$MeaningsTableFilterComposer,
+    $$MeaningsTableOrderingComposer,
+    $$MeaningsTableCreateCompanionBuilder,
+    $$MeaningsTableUpdateCompanionBuilder,
+    (Meaning, $$MeaningsTableReferences),
+    Meaning,
+    PrefetchHooks Function({bool wordId, bool referenceId, bool userId})> {
+  $$MeaningsTableTableManager(_$AppDatabase db, $MeaningsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$MeaningsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$MeaningsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> meaningPt = const Value.absent(),
+            Value<String?> meaningWw = const Value.absent(),
+            Value<String?> commentPt = const Value.absent(),
+            Value<String?> commentWw = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<int> wordId = const Value.absent(),
+            Value<int> referenceId = const Value.absent(),
+            Value<int> userId = const Value.absent(),
+          }) =>
+              MeaningsCompanion(
+            id: id,
+            meaningPt: meaningPt,
+            meaningWw: meaningWw,
+            commentPt: commentPt,
+            commentWw: commentWw,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            wordId: wordId,
+            referenceId: referenceId,
+            userId: userId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String meaningPt,
+            Value<String?> meaningWw = const Value.absent(),
+            Value<String?> commentPt = const Value.absent(),
+            Value<String?> commentWw = const Value.absent(),
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            required int wordId,
+            required int referenceId,
+            required int userId,
+          }) =>
+              MeaningsCompanion.insert(
+            id: id,
+            meaningPt: meaningPt,
+            meaningWw: meaningWw,
+            commentPt: commentPt,
+            commentWw: commentWw,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            wordId: wordId,
+            referenceId: referenceId,
+            userId: userId,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$MeaningsTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: (
+              {wordId = false, referenceId = false, userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (wordId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.wordId,
+                    referencedTable: $$MeaningsTableReferences._wordIdTable(db),
+                    referencedColumn:
+                        $$MeaningsTableReferences._wordIdTable(db).id,
+                  ) as T;
+                }
+                if (referenceId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.referenceId,
+                    referencedTable:
+                        $$MeaningsTableReferences._referenceIdTable(db),
+                    referencedColumn:
+                        $$MeaningsTableReferences._referenceIdTable(db).id,
+                  ) as T;
+                }
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable: $$MeaningsTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$MeaningsTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$MeaningsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $MeaningsTable,
+    Meaning,
+    $$MeaningsTableFilterComposer,
+    $$MeaningsTableOrderingComposer,
+    $$MeaningsTableCreateCompanionBuilder,
+    $$MeaningsTableUpdateCompanionBuilder,
+    (Meaning, $$MeaningsTableReferences),
+    Meaning,
+    PrefetchHooks Function({bool wordId, bool referenceId, bool userId})>;
+typedef $$AttachmentsTableCreateCompanionBuilder = AttachmentsCompanion
     Function({
   Value<int> id,
   required String uuid,
@@ -3040,86 +3571,35 @@ typedef $$AttachmentsTableUpdateCompanionBuilder = AttachmentsCompanion
   Value<int> userId,
 });
 
-class $$AttachmentsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $AttachmentsTable,
-    Attachment,
-    $$AttachmentsTableFilterComposer,
-    $$AttachmentsTableOrderingComposer,
-    $$AttachmentsTableProcessedTableManager,
-    $$AttachmentsTableInsertCompanionBuilder,
-    $$AttachmentsTableUpdateCompanionBuilder> {
-  $$AttachmentsTableTableManager(_$AppDatabase db, $AttachmentsTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$AttachmentsTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$AttachmentsTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$AttachmentsTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            Value<String> uuid = const Value.absent(),
-            Value<String> fileName = const Value.absent(),
-            Value<String> fileDir = const Value.absent(),
-            Value<String> url = const Value.absent(),
-            Value<String> contentType = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime> updatedAt = const Value.absent(),
-            Value<int> wordId = const Value.absent(),
-            Value<int> userId = const Value.absent(),
-          }) =>
-              AttachmentsCompanion(
-            id: id,
-            uuid: uuid,
-            fileName: fileName,
-            fileDir: fileDir,
-            url: url,
-            contentType: contentType,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            wordId: wordId,
-            userId: userId,
-          ),
-          getInsertCompanionBuilder: ({
-            Value<int> id = const Value.absent(),
-            required String uuid,
-            required String fileName,
-            required String fileDir,
-            required String url,
-            required String contentType,
-            required DateTime createdAt,
-            required DateTime updatedAt,
-            required int wordId,
-            required int userId,
-          }) =>
-              AttachmentsCompanion.insert(
-            id: id,
-            uuid: uuid,
-            fileName: fileName,
-            fileDir: fileDir,
-            url: url,
-            contentType: contentType,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            wordId: wordId,
-            userId: userId,
-          ),
-        ));
-}
+final class $$AttachmentsTableReferences
+    extends BaseReferences<_$AppDatabase, $AttachmentsTable, Attachment> {
+  $$AttachmentsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-class $$AttachmentsTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $AttachmentsTable,
-    Attachment,
-    $$AttachmentsTableFilterComposer,
-    $$AttachmentsTableOrderingComposer,
-    $$AttachmentsTableProcessedTableManager,
-    $$AttachmentsTableInsertCompanionBuilder,
-    $$AttachmentsTableUpdateCompanionBuilder> {
-  $$AttachmentsTableProcessedTableManager(super.$state);
+  static $WordsTable _wordIdTable(_$AppDatabase db) => db.words
+      .createAlias($_aliasNameGenerator(db.attachments.wordId, db.words.id));
+
+  $$WordsTableProcessedTableManager? get wordId {
+    if ($_item.wordId == null) return null;
+    final manager = $$WordsTableTableManager($_db, $_db.words)
+        .filter((f) => f.id($_item.wordId!));
+    final item = $_typedResult.readTableOrNull(_wordIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users
+      .createAlias($_aliasNameGenerator(db.attachments.userId, db.users.id));
+
+  $$UsersTableProcessedTableManager? get userId {
+    if ($_item.userId == null) return null;
+    final manager = $$UsersTableTableManager($_db, $_db.users)
+        .filter((f) => f.id($_item.userId!));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$AttachmentsTableFilterComposer
@@ -3258,7 +3738,138 @@ class $$AttachmentsTableOrderingComposer
   }
 }
 
-typedef $$WordCategoriesTableInsertCompanionBuilder = WordCategoriesCompanion
+class $$AttachmentsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $AttachmentsTable,
+    Attachment,
+    $$AttachmentsTableFilterComposer,
+    $$AttachmentsTableOrderingComposer,
+    $$AttachmentsTableCreateCompanionBuilder,
+    $$AttachmentsTableUpdateCompanionBuilder,
+    (Attachment, $$AttachmentsTableReferences),
+    Attachment,
+    PrefetchHooks Function({bool wordId, bool userId})> {
+  $$AttachmentsTableTableManager(_$AppDatabase db, $AttachmentsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$AttachmentsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$AttachmentsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> fileName = const Value.absent(),
+            Value<String> fileDir = const Value.absent(),
+            Value<String> url = const Value.absent(),
+            Value<String> contentType = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<int> wordId = const Value.absent(),
+            Value<int> userId = const Value.absent(),
+          }) =>
+              AttachmentsCompanion(
+            id: id,
+            uuid: uuid,
+            fileName: fileName,
+            fileDir: fileDir,
+            url: url,
+            contentType: contentType,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            wordId: wordId,
+            userId: userId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String fileName,
+            required String fileDir,
+            required String url,
+            required String contentType,
+            required DateTime createdAt,
+            required DateTime updatedAt,
+            required int wordId,
+            required int userId,
+          }) =>
+              AttachmentsCompanion.insert(
+            id: id,
+            uuid: uuid,
+            fileName: fileName,
+            fileDir: fileDir,
+            url: url,
+            contentType: contentType,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            wordId: wordId,
+            userId: userId,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$AttachmentsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({wordId = false, userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (wordId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.wordId,
+                    referencedTable:
+                        $$AttachmentsTableReferences._wordIdTable(db),
+                    referencedColumn:
+                        $$AttachmentsTableReferences._wordIdTable(db).id,
+                  ) as T;
+                }
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable:
+                        $$AttachmentsTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$AttachmentsTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$AttachmentsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $AttachmentsTable,
+    Attachment,
+    $$AttachmentsTableFilterComposer,
+    $$AttachmentsTableOrderingComposer,
+    $$AttachmentsTableCreateCompanionBuilder,
+    $$AttachmentsTableUpdateCompanionBuilder,
+    (Attachment, $$AttachmentsTableReferences),
+    Attachment,
+    PrefetchHooks Function({bool wordId, bool userId})>;
+typedef $$WordCategoriesTableCreateCompanionBuilder = WordCategoriesCompanion
     Function({
   required int wordId,
   required int categoryId,
@@ -3271,59 +3882,37 @@ typedef $$WordCategoriesTableUpdateCompanionBuilder = WordCategoriesCompanion
   Value<int> rowid,
 });
 
-class $$WordCategoriesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $WordCategoriesTable,
-    WordCategory,
-    $$WordCategoriesTableFilterComposer,
-    $$WordCategoriesTableOrderingComposer,
-    $$WordCategoriesTableProcessedTableManager,
-    $$WordCategoriesTableInsertCompanionBuilder,
-    $$WordCategoriesTableUpdateCompanionBuilder> {
-  $$WordCategoriesTableTableManager(
-      _$AppDatabase db, $WordCategoriesTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$WordCategoriesTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$WordCategoriesTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$WordCategoriesTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
-            Value<int> wordId = const Value.absent(),
-            Value<int> categoryId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WordCategoriesCompanion(
-            wordId: wordId,
-            categoryId: categoryId,
-            rowid: rowid,
-          ),
-          getInsertCompanionBuilder: ({
-            required int wordId,
-            required int categoryId,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WordCategoriesCompanion.insert(
-            wordId: wordId,
-            categoryId: categoryId,
-            rowid: rowid,
-          ),
-        ));
-}
+final class $$WordCategoriesTableReferences
+    extends BaseReferences<_$AppDatabase, $WordCategoriesTable, WordCategory> {
+  $$WordCategoriesTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
 
-class $$WordCategoriesTableProcessedTableManager extends ProcessedTableManager<
-    _$AppDatabase,
-    $WordCategoriesTable,
-    WordCategory,
-    $$WordCategoriesTableFilterComposer,
-    $$WordCategoriesTableOrderingComposer,
-    $$WordCategoriesTableProcessedTableManager,
-    $$WordCategoriesTableInsertCompanionBuilder,
-    $$WordCategoriesTableUpdateCompanionBuilder> {
-  $$WordCategoriesTableProcessedTableManager(super.$state);
+  static $WordsTable _wordIdTable(_$AppDatabase db) => db.words
+      .createAlias($_aliasNameGenerator(db.wordCategories.wordId, db.words.id));
+
+  $$WordsTableProcessedTableManager? get wordId {
+    if ($_item.wordId == null) return null;
+    final manager = $$WordsTableTableManager($_db, $_db.words)
+        .filter((f) => f.id($_item.wordId!));
+    final item = $_typedResult.readTableOrNull(_wordIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $CategoriesTable _categoryIdTable(_$AppDatabase db) =>
+      db.categories.createAlias(
+          $_aliasNameGenerator(db.wordCategories.categoryId, db.categories.id));
+
+  $$CategoriesTableProcessedTableManager? get categoryId {
+    if ($_item.categoryId == null) return null;
+    final manager = $$CategoriesTableTableManager($_db, $_db.categories)
+        .filter((f) => f.id($_item.categoryId!));
+    final item = $_typedResult.readTableOrNull(_categoryIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$WordCategoriesTableFilterComposer
@@ -3382,9 +3971,114 @@ class $$WordCategoriesTableOrderingComposer
   }
 }
 
-class _$AppDatabaseManager {
+class $$WordCategoriesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $WordCategoriesTable,
+    WordCategory,
+    $$WordCategoriesTableFilterComposer,
+    $$WordCategoriesTableOrderingComposer,
+    $$WordCategoriesTableCreateCompanionBuilder,
+    $$WordCategoriesTableUpdateCompanionBuilder,
+    (WordCategory, $$WordCategoriesTableReferences),
+    WordCategory,
+    PrefetchHooks Function({bool wordId, bool categoryId})> {
+  $$WordCategoriesTableTableManager(
+      _$AppDatabase db, $WordCategoriesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$WordCategoriesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$WordCategoriesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> wordId = const Value.absent(),
+            Value<int> categoryId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WordCategoriesCompanion(
+            wordId: wordId,
+            categoryId: categoryId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int wordId,
+            required int categoryId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WordCategoriesCompanion.insert(
+            wordId: wordId,
+            categoryId: categoryId,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$WordCategoriesTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({wordId = false, categoryId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (wordId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.wordId,
+                    referencedTable:
+                        $$WordCategoriesTableReferences._wordIdTable(db),
+                    referencedColumn:
+                        $$WordCategoriesTableReferences._wordIdTable(db).id,
+                  ) as T;
+                }
+                if (categoryId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.categoryId,
+                    referencedTable:
+                        $$WordCategoriesTableReferences._categoryIdTable(db),
+                    referencedColumn:
+                        $$WordCategoriesTableReferences._categoryIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$WordCategoriesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $WordCategoriesTable,
+    WordCategory,
+    $$WordCategoriesTableFilterComposer,
+    $$WordCategoriesTableOrderingComposer,
+    $$WordCategoriesTableCreateCompanionBuilder,
+    $$WordCategoriesTableUpdateCompanionBuilder,
+    (WordCategory, $$WordCategoriesTableReferences),
+    WordCategory,
+    PrefetchHooks Function({bool wordId, bool categoryId})>;
+
+class $AppDatabaseManager {
   final _$AppDatabase _db;
-  _$AppDatabaseManager(this._db);
+  $AppDatabaseManager(this._db);
   $$ReferencesTableTableManager get references =>
       $$ReferencesTableTableManager(_db, _db.references);
   $$CategoriesTableTableManager get categories =>
