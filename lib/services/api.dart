@@ -44,7 +44,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<UsersCompanion> users =
@@ -70,7 +70,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<ReferencesCompanion> references =
@@ -105,7 +105,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<WordsCompanion> words =
@@ -142,7 +142,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<MeaningsCompanion> words =
@@ -186,7 +186,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<CategoriesCompanion> words =
@@ -216,7 +216,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<AttachmentsCompanion> words =
@@ -261,7 +261,7 @@ class WaiWaiApiProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       // Parse the JSON response
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
       // Filter out non-map items and cast the rest to Map<String, Object?>
       List<WordCategoriesCompanion> words =
