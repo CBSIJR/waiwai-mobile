@@ -44,3 +44,4 @@ app.*.map.json
 
 /keys
 test.locked.csv
+upload-keystore.jks
