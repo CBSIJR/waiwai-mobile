@@ -68,7 +68,7 @@ class _SideBarState extends State<SideBar> {
     updateDatabase(BuildContext context) async {
       updateOnProgressDialog(context);
       try {
-        bool isConnected = await InternetConnectionChecker().hasConnection;
+        final bool isConnected = await InternetConnectionChecker.instance.hasConnection;
         if (!isConnected) {
           throw MessageApiException(detail: 'Sem conexão com a internet');
         }

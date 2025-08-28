@@ -45,3 +45,5 @@ app.*.map.json
 /keys
 test.locked.csv
 upload-keystore.jks
+/android/key.properties
+/android/app/release-key.jks

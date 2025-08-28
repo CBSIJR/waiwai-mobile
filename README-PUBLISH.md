@@ -3,8 +3,10 @@ https://docs.flutter.dev/deployment/android#add-a-launcher-icon
 https://docs.flutter.dev/deployment/android
 flutter build appbundle
 
-keytool -genkey -v -keystore C:\Users\junior\Documents\Projetos\upload-keystore.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload
-
+cd waiwai-mobile\
+cd android\app\
+keytool -genkey -v -keystore release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias release
+ 
 version: VER_NAME+VER_CODE
 
 ```
